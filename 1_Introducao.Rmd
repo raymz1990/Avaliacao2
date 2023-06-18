@@ -1,0 +1,59 @@
+---
+title: ""
+output:
+  html_document:                    
+    #toc: true                       
+    #toc_depth: 3                    
+    #toc_float:                      
+    #  collapsed: true
+    #  smooth_scroll: true
+    #number_sections: true           
+    # theme: darkly
+    #spacelab
+    #default,cerulean,journal,flatly,readable,spacelab,
+    #united,cosmo,lumen,paper,sandstone,simplex,yeti
+    
+    highlight: espresso
+    #default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, and textmate
+    #css: styles.css                
+    fig_width: 7                    
+    fig_height: 6                   
+    fig_caption: true               
+    fig_align: 'center'
+    #code_folding: hide              
+    #keep_md: true
+---
+
+<style>
+  body {
+    text-align: justify;
+  }
+</style>
+
+---
+
+# Sobre o projeto
+
+---
+
+Neste relatório, apresentaremos uma análise dos dados coletados sobre os clientes da nossa empresa de revenda de carros usados nos últimos anos. A implementação de uma área de Customer Relationship Management (CRM) tem se mostrado cada vez mais essencial para as empresas que desejam aprimorar o relacionamento com os clientes, aumentar a satisfação e impulsionar as vendas. Nesse sentido, a análise estatística dos dados pode fornecer insights valiosos para aprimorar as estratégias de marketing, melhorar a fidelização dos clientes e impulsionar o sucesso do negócio.
+
+O objetivo deste relatório é apresentar os resultados da análise estatística dos dados dos clientes da nossa empresa de revenda de carros usados e demonstrar como essas informações podem ser utilizadas para implementar uma área de CRM eficiente. Ao entender melhor o perfil dos nossos clientes, suas preferências e comportamentos de compra, seremos capazes de personalizar nossas estratégias de marketing, aprimorar o atendimento e estabelecer um relacionamento mais próximo com cada cliente.
+
+Vale ressaltar que este relatório se concentra principalmente na análise dos dados dos clientes, fornecendo uma visão geral de seu perfil demográfico, comportamento de compra e preferências. As informações coletadas são baseadas nos carros vendidos pela empresa nos últimos anos. No entanto, é importante destacar que questões relacionadas à implementação técnica do CRM, ferramentas específicas e aspectos operacionais serão abordadas de forma mais abrangente em relatórios subsequentes.
+
+Ao explorar os dados dos nossos clientes e compreender melhor seus perfis e preferências, estaremos aptos a desenvolver estratégias de marketing mais eficientes, otimizar a experiência do cliente e impulsionar o crescimento da nossa empresa. A análise estatística dos dados é uma ferramenta poderosa que pode nos fornecer insights valiosos para melhorar o desempenho do negócio e alcançar resultados ainda mais satisfatórios. Acompanhe este relatório para descobrir como podemos utilizar essas informações para impulsionar o sucesso da nossa empresa.
+
+Todo o conjunto de dados foi extraído do nosso CRM, transformado e carregado no software R, onde foi realizada toda a análise exploratória.
+
+
+---
+
+O relatório se divide nas seguintes seções:
+
+ - Introdução
+ - Relatório
+ - Dashboard
+
+
+---

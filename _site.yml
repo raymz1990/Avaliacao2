@@ -1,0 +1,78 @@
+name: "Avalicao 2 CE301"
+
+output_dir: "."
+
+navbar:
+  type: inverse
+  title: "ADRCar"
+
+  left:
+    - text: "Introdução"
+      icon: fa-circle
+      href: 1_Introducao.html
+
+    - text: "Relatório"
+      icon: fa-play
+      menu:
+
+        - text: "---------" 
+
+        - text: "Perfis dos Veículos Vendidos"
+          icon: fa-arrow-right
+          href: 2.1_Veiculos.html
+
+        - text: "Pesquisa satisfação dos Clientes"
+          icon: fa-arrow-right
+          href: 2.2_Pesquisa.html
+
+        - text: "---------" 
+
+      
+    - text: "Dashboard"
+      icon: fa-bar-chart
+      menu:
+
+        - text: "---------" 
+
+        - text: "Apresentação dos Resultados"
+          icon: fa-arrow-right
+          href: 3.1_Apresentacao.html
+
+    - text: "Ações para melhorias"
+      icon: fa-lightbulb
+      href: 4_Conclusao.html
+
+
+  right:
+    - text: "Alan Vitor"
+      icon: fa-user 
+      href: https://ufprvirtual.ufpr.br/user/profile.php?id=63141
+      
+    - text: "Diana"
+      icon: fa-user 
+      href: https://ufprvirtual.ufpr.br/user/profile.php?id=44332
+      
+    - text: "Raymundo"
+      icon: fa-user 
+      href: https://ufprvirtual.ufpr.br/user/profile.php?id=63349
+
+        
+output:
+  html_document:
+    theme: spacelab 
+    #  united
+    highlight: textmate
+    #include:
+    #  after_body: footer.html
+    #css: styles.css
+
+    # THEMES
+    # default, cerulean, journal, 
+    # flatly, darkly, readable, 
+    # spacelab, united, cosmo, 
+    # lumen, paper, sandstone, 
+    # simplex, and yeti
+    includes:
+      
+      #before_body: header.html
+      

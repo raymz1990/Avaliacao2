@@ -1,0 +1,53 @@
+---
+title: "Ações para Melhorias"
+output:
+  html_document:                    
+    #toc: true                       
+    #toc_depth: 3                    
+    #toc_float:                      
+    #  collapsed: true
+    #  smooth_scroll: true
+    #number_sections: true           
+    # theme: darkly
+    #spacelab
+    #default,cerulean,journal,flatly,readable,spacelab,
+    #united,cosmo,lumen,paper,sandstone,simplex,yeti
+    
+    highlight: espresso
+    #default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, and textmate
+    #css: styles.css                
+    fig_width: 7                    
+    fig_height: 6                   
+    fig_caption: true               
+    fig_align: 'center'
+    #code_folding: hide              
+    #keep_md: true
+---
+
+<style>
+  body {
+    text-align: justify;
+  }
+</style>
+
+---
+
+
+Com base em nos dados levantados, surgiram uma série de oportunidades e recomendações para aprimorar o desempenho da empresa com base nas análises estatísticas realizadas:
+
+1. Identificar segmentos de mercado promissores: Com base nos dados de vendas, é possível identificar segmentos de mercado específicos que apresentam maior demanda por determinados tipos de veículos. Recomende direcionar esforços de marketing e estoque para esses segmentos para otimizar as vendas.
+
+2. Ajustar o mix de veículos: Analise quais tipos de veículos são mais vendidos e quais têm menor demanda. Recomende ajustes no mix de veículos disponíveis para venda, priorizando aqueles com maior aceitação no mercado e considerando a demanda em diferentes faixas de preço.
+
+3. Aprimorar o relacionamento com os clientes: Utilize o CRM (Customer Relationship Management) para aprimorar o atendimento e a comunicação com os clientes. Recomende o desenvolvimento de programas de fidelidade, envio de newsletters personalizadas e acompanhamento pós-venda para estabelecer um relacionamento duradouro com os clientes.
+
+4. Investir em marketing digital: Utilize os insights obtidos da análise estatística para direcionar os esforços de marketing digital. Recomende investir em anúncios online, presença nas redes sociais e otimização do site para aumentar a visibilidade da empresa e atrair mais clientes.
+
+5. Monitorar a concorrência: Acompanhe as estratégias e ações da concorrência para se manter atualizado sobre o mercado. Recomende a realização de análises comparativas e benchmarking para identificar oportunidades de diferenciação e melhorias.
+
+6. Promover treinamentos e capacitação: Investir no desenvolvimento dos colaboradores é essencial para aprimorar a qualidade do atendimento e a expertise da equipe. Recomende programas de treinamento e capacitação para os vendedores, a fim de melhorar suas habilidades de negociação e conhecimento sobre os veículos.
+
+7. Coletar feedback dos clientes: Implemente mecanismos para coletar feedback dos clientes, como pesquisas de satisfação pós-compra. Utilize esses insights para identificar áreas de melhoria e aprimorar constantemente a experiência do cliente.
+
+
+---

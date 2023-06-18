@@ -9,7 +9,7 @@ navbar:
   left:
     - text: "Introdução"
       icon: fa-circle
-      href: 1_Introducao.html
+      href: index.html
 
     - text: "Relatório"
       icon: fa-play

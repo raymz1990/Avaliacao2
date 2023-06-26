@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Pesquisa de Satifação dos clientes</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.28/datatables.js"></script>
+<link href="site_libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="site_libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">ADRCar</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-circle"></span>
+     
+    Introdução
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-play"></span>
+     
+    Relatório
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li>
+      <a href="2.1_Veiculos.html">
+        <span class="fa fa-arrow-right"></span>
+         
+        Perfis dos Veículos Vendidos
+      </a>
+    </li>
+    <li>
+      <a href="2.2_Pesquisa.html">
+        <span class="fa fa-arrow-right"></span>
+         
+        Pesquisa satisfação dos Clientes
+      </a>
+    </li>
+    <li class="divider"></li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-bar-chart"></span>
+     
+    Dashboard
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li>
+      <a href="3.1_Apresentacao.html">
+        <span class="fa fa-arrow-right"></span>
+         
+        Apresentação dos Resultados
+      </a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="4_Conclusao.html">
+    <span class="fa fa-lightbulb"></span>
+     
+    Ações para melhorias
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://ufprvirtual.ufpr.br/user/profile.php?id=63141">
+    <span class="fa fa-user"></span>
+     
+    Alan Vitor
+  </a>
+</li>
+<li>
+  <a href="https://ufprvirtual.ufpr.br/user/profile.php?id=44332">
+    <span class="fa fa-user"></span>
+     
+    Diana
+  </a>
+</li>
+<li>
+  <a href="https://ufprvirtual.ufpr.br/user/profile.php?id=63349">
+    <span class="fa fa-user"></span>
+     
+    Raymundo
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Pesquisa de Satifação dos clientes</h1>
+
+</div>
+
+
+<style>
+  body {
+    text-align: justify;
+  }
+</style>
+<hr />
+<div id="section" class="section level3">
+<h3></h3>
+<p>A satisfação do cliente é um aspecto fundamental para o sucesso de
+qualquer empresa. Compreender as expectativas, necessidades e percepções
+dos nossos clientes é essencial para oferecer um serviço de qualidade e
+criar relacionamentos. Nesse contexto, a pesquisa de satisfação do
+cliente desempenha um papel crucial.</p>
+<p>Nesta seção, abordaremos os principais resultados obtidos na pesquisa
+através dos índices <strong>NPS</strong> e <strong>CSAT</strong>, que
+visam mensurar o quanto o cliente está satisfeito em relação aos nossos
+produtos e serviços.</p>
+<hr />
+</div>
+<div id="o-que-é-nps-e-csat" class="section level3">
+<h3>O que é NPS e CSAT?</h3>
+<p>Dois indicadores bastante eficientes e importantes na avaliação de
+satisfação do clientes são o NPS e CSAT, que vamos discorrer ao longo
+desta seção.</p>
+<div id="nps---net-promoter-score" class="section level4">
+<h4><strong>1. NPS - Net Promoter Score</strong></h4>
+<p>O <i> Net Promoter Score </i> é uma métrica usada nos programas de
+experiência do cliente para medir a fidelidade dos clientes a uma
+empresa. O Net Promoter Score costuma ser medido com pesquisas NPS de
+pergunta única e retratado em forma de uma pontuação de -100 à 100.
+Quanto maior o NPS, melhor.</p>
+<p>O <i> Net Promoter Score </i> é considerado o padrão ouro das
+métricas de experiência do cliente. Desenvolvido em 2003 pela
+<strong>Bain and Company</strong>, ele hoje é usado por milhões de
+empresas para monitorar a percepção dos clientes a respeito da marca
+através de pesquisas NPS.</p>
+<p>A pesquisa NPS é feita com uma pergunta simples:</p>
+<p>Qual é a probabilidade de você recomendar a empresa o produto ou
+serviço para um amigo?</p>
+<p>Os participantes dão uma nota entre 0 e 10, sendo 0 nada provável e
+10 muito provável e, dependendo das respostas, eles entram em uma das 3
+categorias de Net Promoter Score abaixo:</p>
+<ul>
+<li>Quem dá uma pontuação de 9 ou 10 é considerado promotor. Para a
+pesquisa NPS, os promotores são pessoas que costumam ser entusiastas da
+marca.</li>
+<li>Quem dá uma pontuação de 7 ou 8 é considerado passivo. Para a
+pesquisa NPS, são as pessoas que estão satisfeitas com o serviço, mas
+não a ponto de serem promotoras.</li>
+<li>Quem dá uma pontuação de 0 a 6 é considerado detrator da marca. Para
+a pesquisa NPS, são pessoas insatisfeitas que não devem comprar o seu
+produto novamente e podem até incentivar outras pessoas a não
+comprar.</li>
+</ul>
+<p>Para se obter o índice de NPS, basta subtrair o percentual de
+detratores do percentual de promotores.</p>
+<p><img src="imagens/Indice%20NPS.png" /></p>
+</div>
+<div id="csat---customer-satisfaction-score" class="section level4">
+<h4><strong>2. CSAT - Customer Satisfaction Score</strong></h4>
+<p>O <i> Customer Satisfaction Score </i> é uma métrica utilizada para
+saber a porcentagem de clientes satisfeitos com sua empresa, normalmente
+identificada por uma pequena pesquisa de satisfação.</p>
+<p>Seu uso pode facilitar a descoberta de informações sobre as etapas da
+jornada do cliente e qual experiência ele teve nos diferentes pontos de
+contato com a marca.</p>
+<p>A marca pode utilizar o CSAT para descobrir se o cliente está feliz
+com o produto ou serviço contratado, o atendimento prestado pela
+empresa, a assistência pós compra, entre outros.</p>
+<p>Após um contato com sua marca, o cliente pode responder a algumas
+perguntas simples como:</p>
+<ul>
+<li>Qual o seu nível de satisfação com o nosso produto?</li>
+<li>Qual o seu nível de satisfação com a entrega realizada?</li>
+<li>Qual o seu nível de satisfação com o atendimento que acabou de
+receber?</li>
+</ul>
+<p>Para a resposta, a empresa pode oferecer duas modalidades:</p>
+<ul>
+<li>Escala numérica: avaliação por notas de 0 a 10;</li>
+<li>Escala de percepção: avaliação por termos como “satisfeito”,
+“indiferente”, “pouco satisfeito”, “ótimo”, “regular”, “ruim”.</li>
+</ul>
+<p>Além de coletar o feedback dos usuários, o CSAT pode evidenciar
+processos que precisam de melhorias dentro da sua empresa.</p>
+<p>Entre os maiores benefícios de realizar o CSAT, podemos citar:</p>
+<ul>
+<li>Fácil implementação e baixo custo</li>
+<li>Fortalecimento da relação entre cliente e empresa</li>
+<li>Dados e insights para melhoria de processos e serviços</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="nps" class="section level3">
+<h3>NPS</h3>
+<p>Na análise do <i> Net Promoter Score </i> é possível observar que um
+total de <strong>4.202</strong> donos de veículos tem uma Recomendação
+positiva, performando <strong>50.43%</strong>, enquanto que os
+Detratores somaram <strong>2.228</strong> representando
+<strong>26.74%</strong>. Dessa forma, o índice calculado da amostra foi
+de <strong>23.69%</strong>.</p>
+<div id="section-1"
+class="section level4 tabset tabset-fade tabset-pills">
+<h4 class="tabset tabset-fade tabset-pills"></h4>
+<div class="tabbable">
+<ul class="nav nav-tabs" data-tabsetid="2434">
+<li class="active">
+<a href="#tab-2434-1" data-toggle="tab" data-bs-toggle="tab" data-value="Tabela NPS por Marca">Tabela NPS por Marca</a>
+</li>
+<li>
+<a href="#tab-2434-2" data-toggle="tab" data-bs-toggle="tab" data-value="Tabela NPS por Veículo">Tabela NPS por Veículo</a>
+</li>
+</ul>
+<div class="tab-content" data-tabsetid="2434">
+<div class="tab-pane active" data-value="Tabela NPS por Marca" id="tab-2434-1">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-7cea7e0148d27a3f5ce2" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-7cea7e0148d27a3f5ce2">{"x":{"filter":"none","vertical":false,"editable":{"target":"cell","disable":{"columns":null},"numeric":[1,2,3,4,5],"date":[]},"data":[["Chevrolet","Fiat","Ford","Honda","Hyundai","JAC","Renault","Volkswagen"],[780,684,556,217,243,44,1057,621],[465,336,173,86,105,19,378,340],[616,363,184,65,105,29,340,526],[1861,1383,913,368,453,92,1775,1487],[8.81,23.21,40.74,41.3,30.46,16.3,40.39,6.39]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Marca<\/th>\n      <th>Promotores<\/th>\n      <th>Passivos<\/th>\n      <th>Detratores<\/th>\n      <th>Total<\/th>\n      <th>NPS<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'width':'40%'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'width':'12.5%'});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'width':'12.5%'});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'width':'12.5%'});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'width':'12.5%'});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'width':'10%'});\n}"},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Tabela NPS por Veículo" id="tab-2434-2">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f2e7d25420885db80d89" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-f2e7d25420885db80d89">{"x":{"filter":"none","vertical":false,"editable":{"target":"cell","disable":{"columns":null},"numeric":[2,3,4,5,6],"date":[]},"data":[["Chevrolet","Fiat","Chevrolet","Chevrolet","Fiat","Fiat","Chevrolet","Fiat","Fiat","Chevrolet","Ford","Fiat","Chevrolet","Ford","JAC","Honda","Ford","Renault","Honda","Ford","Renault","Hyundai","Ford","Renault","Hyundai","Ford","Renault","Volkswagen","Volkswagen","Renault","Volkswagen","Volkswagen","Volkswagen","Volkswagen"],["Agile","Siena","S10","Celta","Strada","Bravo","Fox","Uno","Cruze","Montana","Ecosport","Punto","Onix","Focus","J3","City","Idea","Clio","Fit","KA","Duster","HB20","Palio","Fluence","Tucson","Ranger","Logan","Saveiro","Polo","Sandero","Voyage","Gol","Crossfox","Jetta"],[133,199,53,226,67,84,217,56,95,49,53,183,102,185,44,154,136,189,63,111,113,96,53,181,147,18,273,28,139,301,121,172,67,94],[85,90,21,155,42,27,149,46,21,32,10,110,23,23,19,51,51,79,35,51,39,33,37,23,72,1,88,20,55,149,85,130,27,23],[171,82,43,102,37,26,243,83,31,38,30,104,19,9,29,29,53,32,36,33,34,20,44,38,85,15,78,27,23,158,109,316,38,13],[389,371,117,483,146,137,609,185,147,119,93,397,144,217,92,234,240,300,134,195,186,149,134,242,304,34,439,75,217,608,315,618,132,130],[-9.77,31.54,8.55,25.67,20.55,42.34,-4.27,-14.59,43.54,9.24,24.73,19.9,57.64,81.11,16.3,53.42,34.58,52.33,20.15,40,42.47,51.01,6.72,59.09,20.39,8.82,44.42,1.33,53.46,23.52,3.81,-23.3,21.97,62.31]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Marca<\/th>\n      <th>Carro<\/th>\n      <th>Promotores<\/th>\n      <th>Passivos<\/th>\n      <th>Detratores<\/th>\n      <th>Total<\/th>\n      <th>NPS<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6]}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'width':'20%'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'width':'20%'});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'width':'12.5%'});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'width':'12.5%'});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'width':'12.5%'});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'width':'12.5%'});\nvar value=data[6]; $(this.api().cell(row, 6).node()).css({'width':'10%'});\n}"},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+</div>
+<div id="section-2"
+class="section level4 tabset tabset-fade tabset-pills">
+<h4 class="tabset tabset-fade tabset-pills"></h4>
+<div class="tabbable">
+<ul class="nav nav-tabs" data-tabsetid="4370">
+<li class="active">
+<a href="#tab-4370-1" data-toggle="tab" data-bs-toggle="tab" data-value="NPS Geral">NPS Geral</a>
+</li>
+<li>
+<a href="#tab-4370-2" data-toggle="tab" data-bs-toggle="tab" data-value="NPS por Marca">NPS por Marca</a>
+</li>
+<li>
+<a href="#tab-4370-3" data-toggle="tab" data-bs-toggle="tab" data-value="Chevrolet">Chevrolet</a>
+</li>
+<li>
+<a href="#tab-4370-4" data-toggle="tab" data-bs-toggle="tab" data-value="Fiat">Fiat</a>
+</li>
+<li>
+<a href="#tab-4370-5" data-toggle="tab" data-bs-toggle="tab" data-value="Ford">Ford</a>
+</li>
+<li>
+<a href="#tab-4370-6" data-toggle="tab" data-bs-toggle="tab" data-value="Honda">Honda</a>
+</li>
+<li>
+<a href="#tab-4370-7" data-toggle="tab" data-bs-toggle="tab" data-value="Hyundai">Hyundai</a>
+</li>
+<li>
+<a href="#tab-4370-8" data-toggle="tab" data-bs-toggle="tab" data-value="JAC">JAC</a>
+</li>
+<li>
+<a href="#tab-4370-9" data-toggle="tab" data-bs-toggle="tab" data-value="Renault">Renault</a>
+</li>
+<li>
+<a href="#tab-4370-10" data-toggle="tab" data-bs-toggle="tab" data-value="Volkswagen">Volkswagen</a>
+</li>
+</ul>
+<div class="tab-content" data-tabsetid="4370">
+<div class="tab-pane active" data-value="NPS Geral" id="tab-4370-1">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-5376dcfbc9f3c1b2a5d4" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-5376dcfbc9f3c1b2a5d4">{"x":{"visdat":{"2b3460e53e4d":["function () ","plotlyVisDat"]},"cur_data":"2b3460e53e4d","attrs":{"2b3460e53e4d":{"labels":{},"values":{},"hole":0.5,"marker":{"colors":{}},"textposition":"auto","hoverinfo":"text+percent","text":{},"textinfo":"percent","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores"],"values":[171,82,43,102,37,26,243,83,31,38,30,104,19,9,29,29,53,32,36,33,34,20,44,38,85,15,78,27,23,158,109,316,38,13,149,85,32,10,155,23,23,90,21,51,42,27,51,46,21,37,23,110,1,88,19,51,149,79,35,27,39,33,130,20,72,23,85,55,49,53,102,133,84,217,226,95,53,53,183,18,185,199,154,136,67,63,111,56,96,172,181,147,94,273,44,139,301,189,28,67,113,121],"hole":0.5,"marker":{"color":"rgba(31,119,180,1)","colors":["#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#E53935","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#FCD036","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F","#00BF6F"],"line":{"color":"rgba(255,255,255,1)"}},"textposition":["auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto"],"hoverinfo":["text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent"],"text":["Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Detratores","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Passivos","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores","Promotores"],"textinfo":"percent","type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="NPS por Marca" id="tab-4370-2">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-304a51648797628328a4" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-304a51648797628328a4">{"x":{"visdat":{"2b3434654b83":["function () ","plotlyVisDat"]},"cur_data":"2b3434654b83","attrs":{"2b3434654b83":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#00BF6F","#FCD036","#E53935"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"NPS por Marca","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Marca","type":"category","categoryorder":"array","categoryarray":["Chevrolet","Fiat","Ford","Honda","Hyundai","JAC","Renault","Volkswagen"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Chevrolet","Fiat","Ford","Honda","Hyundai","JAC","Renault","Volkswagen"],"y":[33.1,26.25,20.15,17.66,23.18,31.52,19.15,35.37],"hovertemplate":["Detratores: 33.1%","Detratores: 26.25%","Detratores: 20.15%","Detratores: 17.66%","Detratores: 23.18%","Detratores: 31.52%","Detratores: 19.15%","Detratores: 35.37%"],"type":"bar","name":"Detratores","marker":{"color":"rgba(229,57,53,1)","line":{"color":"rgba(229,57,53,1)"}},"textfont":{"color":"rgba(229,57,53,1)"},"error_y":{"color":"rgba(229,57,53,1)"},"error_x":{"color":"rgba(229,57,53,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Chevrolet","Fiat","Ford","Honda","Hyundai","JAC","Renault","Volkswagen"],"y":[24.99,24.3,18.95,23.37,23.18,20.65,21.3,22.86],"hovertemplate":["Passivos: 24.99%","Passivos: 24.3%","Passivos: 18.95%","Passivos: 23.37%","Passivos: 23.18%","Passivos: 20.65%","Passivos: 21.3%","Passivos: 22.86%"],"type":"bar","name":"Passivos","marker":{"color":"rgba(252,208,54,1)","line":{"color":"rgba(252,208,54,1)"}},"textfont":{"color":"rgba(252,208,54,1)"},"error_y":{"color":"rgba(252,208,54,1)"},"error_x":{"color":"rgba(252,208,54,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Chevrolet","Fiat","Ford","Honda","Hyundai","JAC","Renault","Volkswagen"],"y":[41.91,49.46,60.9,58.97,53.64,47.83,59.55,41.76],"hovertemplate":["Promotores: 41.91%","Promotores: 49.46%","Promotores: 60.9%","Promotores: 58.97%","Promotores: 53.64%","Promotores: 47.83%","Promotores: 59.55%","Promotores: 41.76%"],"type":"bar","name":"Promotores","marker":{"color":"rgba(0,191,111,1)","line":{"color":"rgba(0,191,111,1)"}},"textfont":{"color":"rgba(0,191,111,1)"},"error_y":{"color":"rgba(0,191,111,1)"},"error_x":{"color":"rgba(0,191,111,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Chevrolet" id="tab-4370-3">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-957f5ea8c91183edb9ba" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-957f5ea8c91183edb9ba">{"x":{"visdat":{"2b344b1b5fc0":["function () ","plotlyVisDat"]},"cur_data":"2b344b1b5fc0","attrs":{"2b344b1b5fc0":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#00BF6F","#FCD036","#E53935"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"NPS Veículos Chevrolet","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["Agile","Celta","Fox","Montana","Onix","S10"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Agile","S10","Celta","Fox","Montana","Onix"],"y":[43.96,36.75,21.12,39.9,31.93,13.19],"hovertemplate":["Detratores: 43.96%","Detratores: 36.75%","Detratores: 21.12%","Detratores: 39.9%","Detratores: 31.93%","Detratores: 13.19%"],"type":"bar","name":"Detratores","marker":{"color":"rgba(229,57,53,1)","line":{"color":"rgba(229,57,53,1)"}},"textfont":{"color":"rgba(229,57,53,1)"},"error_y":{"color":"rgba(229,57,53,1)"},"error_x":{"color":"rgba(229,57,53,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Fox","Agile","Montana","Celta","Onix","S10"],"y":[24.47,21.85,26.89,32.09,15.97,17.95],"hovertemplate":["Passivos: 24.47%","Passivos: 21.85%","Passivos: 26.89%","Passivos: 32.09%","Passivos: 15.97%","Passivos: 17.95%"],"type":"bar","name":"Passivos","marker":{"color":"rgba(252,208,54,1)","line":{"color":"rgba(252,208,54,1)"}},"textfont":{"color":"rgba(252,208,54,1)"},"error_y":{"color":"rgba(252,208,54,1)"},"error_x":{"color":"rgba(252,208,54,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Montana","S10","Onix","Agile","Fox","Celta"],"y":[41.18,45.3,70.83,34.19,35.63,46.79],"hovertemplate":["Promotores: 41.18%","Promotores: 45.3%","Promotores: 70.83%","Promotores: 34.19%","Promotores: 35.63%","Promotores: 46.79%"],"type":"bar","name":"Promotores","marker":{"color":"rgba(0,191,111,1)","line":{"color":"rgba(0,191,111,1)"}},"textfont":{"color":"rgba(0,191,111,1)"},"error_y":{"color":"rgba(0,191,111,1)"},"error_x":{"color":"rgba(0,191,111,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Fiat" id="tab-4370-4">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-efdddd2cb3b2d2f3a471" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-efdddd2cb3b2d2f3a471">{"x":{"visdat":{"2b346b1b2274":["function () ","plotlyVisDat"]},"cur_data":"2b346b1b2274","attrs":{"2b346b1b2274":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#00BF6F","#FCD036","#E53935"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"NPS Veículos Fiat","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["Bravo","Cruze","Punto","Siena","Strada","Uno"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Siena","Strada","Bravo","Uno","Cruze","Punto"],"y":[22.1,25.34,18.98,44.86,21.09,26.2],"hovertemplate":["Detratores: 22.1%","Detratores: 25.34%","Detratores: 18.98%","Detratores: 44.86%","Detratores: 21.09%","Detratores: 26.2%"],"type":"bar","name":"Detratores","marker":{"color":"rgba(229,57,53,1)","line":{"color":"rgba(229,57,53,1)"}},"textfont":{"color":"rgba(229,57,53,1)"},"error_y":{"color":"rgba(229,57,53,1)"},"error_x":{"color":"rgba(229,57,53,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Siena","Strada","Bravo","Uno","Cruze","Punto"],"y":[24.26,28.77,19.71,24.86,14.29,27.71],"hovertemplate":["Passivos: 24.26%","Passivos: 28.77%","Passivos: 19.71%","Passivos: 24.86%","Passivos: 14.29%","Passivos: 27.71%"],"type":"bar","name":"Passivos","marker":{"color":"rgba(252,208,54,1)","line":{"color":"rgba(252,208,54,1)"}},"textfont":{"color":"rgba(252,208,54,1)"},"error_y":{"color":"rgba(252,208,54,1)"},"error_x":{"color":"rgba(252,208,54,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Bravo","Cruze","Punto","Siena","Strada","Uno"],"y":[61.31,64.63,46.1,53.64,45.89,30.27],"hovertemplate":["Promotores: 61.31%","Promotores: 64.63%","Promotores: 46.1%","Promotores: 53.64%","Promotores: 45.89%","Promotores: 30.27%"],"type":"bar","name":"Promotores","marker":{"color":"rgba(0,191,111,1)","line":{"color":"rgba(0,191,111,1)"}},"textfont":{"color":"rgba(0,191,111,1)"},"error_y":{"color":"rgba(0,191,111,1)"},"error_x":{"color":"rgba(0,191,111,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Ford" id="tab-4370-5">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-68a30c54890374b2cfe8" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-68a30c54890374b2cfe8">{"x":{"visdat":{"2b341f31440":["function () ","plotlyVisDat"]},"cur_data":"2b341f31440","attrs":{"2b341f31440":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#00BF6F","#FCD036","#E53935"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"NPS Veículos Ford","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["Ecosport","Focus","Idea","KA","Palio","Ranger"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Ecosport","Focus","Idea","KA","Palio","Ranger"],"y":[32.26,4.15,22.08,16.92,32.84,44.12],"hovertemplate":["Detratores: 32.26%","Detratores: 4.15%","Detratores: 22.08%","Detratores: 16.92%","Detratores: 32.84%","Detratores: 44.12%"],"type":"bar","name":"Detratores","marker":{"color":"rgba(229,57,53,1)","line":{"color":"rgba(229,57,53,1)"}},"textfont":{"color":"rgba(229,57,53,1)"},"error_y":{"color":"rgba(229,57,53,1)"},"error_x":{"color":"rgba(229,57,53,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Ecosport","Focus","Idea","KA","Palio","Ranger"],"y":[10.75,10.6,21.25,26.15,27.61,2.94],"hovertemplate":["Passivos: 10.75%","Passivos: 10.6%","Passivos: 21.25%","Passivos: 26.15%","Passivos: 27.61%","Passivos: 2.94%"],"type":"bar","name":"Passivos","marker":{"color":"rgba(252,208,54,1)","line":{"color":"rgba(252,208,54,1)"}},"textfont":{"color":"rgba(252,208,54,1)"},"error_y":{"color":"rgba(252,208,54,1)"},"error_x":{"color":"rgba(252,208,54,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Palio","Ecosport","Ranger","Focus","Idea","KA"],"y":[39.55,56.99,52.94,85.25,56.67,56.92],"hovertemplate":["Promotores: 39.55%","Promotores: 56.99%","Promotores: 52.94%","Promotores: 85.25%","Promotores: 56.67%","Promotores: 56.92%"],"type":"bar","name":"Promotores","marker":{"color":"rgba(0,191,111,1)","line":{"color":"rgba(0,191,111,1)"}},"textfont":{"color":"rgba(0,191,111,1)"},"error_y":{"color":"rgba(0,191,111,1)"},"error_x":{"color":"rgba(0,191,111,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Honda" id="tab-4370-6">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-7c3bb59afaf2fc707b2b" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-7c3bb59afaf2fc707b2b">{"x":{"visdat":{"2b3437a96623":["function () ","plotlyVisDat"]},"cur_data":"2b3437a96623","attrs":{"2b3437a96623":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#00BF6F","#FCD036","#E53935"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"NPS Veículos Honda","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["City","Fit"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["City","Fit"],"y":[12.39,26.87],"hovertemplate":["Detratores: 12.39%","Detratores: 26.87%"],"type":"bar","name":"Detratores","marker":{"color":"rgba(229,57,53,1)","line":{"color":"rgba(229,57,53,1)"}},"textfont":{"color":"rgba(229,57,53,1)"},"error_y":{"color":"rgba(229,57,53,1)"},"error_x":{"color":"rgba(229,57,53,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["City","Fit"],"y":[21.79,26.12],"hovertemplate":["Passivos: 21.79%","Passivos: 26.12%"],"type":"bar","name":"Passivos","marker":{"color":"rgba(252,208,54,1)","line":{"color":"rgba(252,208,54,1)"}},"textfont":{"color":"rgba(252,208,54,1)"},"error_y":{"color":"rgba(252,208,54,1)"},"error_x":{"color":"rgba(252,208,54,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["City","Fit"],"y":[65.81,47.01],"hovertemplate":["Promotores: 65.81%","Promotores: 47.01%"],"type":"bar","name":"Promotores","marker":{"color":"rgba(0,191,111,1)","line":{"color":"rgba(0,191,111,1)"}},"textfont":{"color":"rgba(0,191,111,1)"},"error_y":{"color":"rgba(0,191,111,1)"},"error_x":{"color":"rgba(0,191,111,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Hyundai" id="tab-4370-7">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-007596c45ce0d0101b35" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-007596c45ce0d0101b35">{"x":{"visdat":{"2b3452917707":["function () ","plotlyVisDat"]},"cur_data":"2b3452917707","attrs":{"2b3452917707":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#00BF6F","#FCD036","#E53935"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"NPS Veículos Hyundai","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["HB20","Tucson"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["HB20","Tucson"],"y":[13.42,27.96],"hovertemplate":["Detratores: 13.42%","Detratores: 27.96%"],"type":"bar","name":"Detratores","marker":{"color":"rgba(229,57,53,1)","line":{"color":"rgba(229,57,53,1)"}},"textfont":{"color":"rgba(229,57,53,1)"},"error_y":{"color":"rgba(229,57,53,1)"},"error_x":{"color":"rgba(229,57,53,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["HB20","Tucson"],"y":[22.15,23.68],"hovertemplate":["Passivos: 22.15%","Passivos: 23.68%"],"type":"bar","name":"Passivos","marker":{"color":"rgba(252,208,54,1)","line":{"color":"rgba(252,208,54,1)"}},"textfont":{"color":"rgba(252,208,54,1)"},"error_y":{"color":"rgba(252,208,54,1)"},"error_x":{"color":"rgba(252,208,54,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["HB20","Tucson"],"y":[64.43,48.36],"hovertemplate":["Promotores: 64.43%","Promotores: 48.36%"],"type":"bar","name":"Promotores","marker":{"color":"rgba(0,191,111,1)","line":{"color":"rgba(0,191,111,1)"}},"textfont":{"color":"rgba(0,191,111,1)"},"error_y":{"color":"rgba(0,191,111,1)"},"error_x":{"color":"rgba(0,191,111,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="JAC" id="tab-4370-8">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e14ca7368712bb124300" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-e14ca7368712bb124300">{"x":{"visdat":{"2b343aef12b5":["function () ","plotlyVisDat"]},"cur_data":"2b343aef12b5","attrs":{"2b343aef12b5":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#00BF6F","#FCD036","#E53935"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"NPS Veículos JAC","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["J3"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["J3"],"y":[31.52],"hovertemplate":"Detratores: 31.52%","type":"bar","name":"Detratores","marker":{"color":"rgba(229,57,53,1)","line":{"color":"rgba(229,57,53,1)"}},"textfont":{"color":"rgba(229,57,53,1)"},"error_y":{"color":"rgba(229,57,53,1)"},"error_x":{"color":"rgba(229,57,53,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["J3"],"y":[20.65],"hovertemplate":"Passivos: 20.65%","type":"bar","name":"Passivos","marker":{"color":"rgba(252,208,54,1)","line":{"color":"rgba(252,208,54,1)"}},"textfont":{"color":"rgba(252,208,54,1)"},"error_y":{"color":"rgba(252,208,54,1)"},"error_x":{"color":"rgba(252,208,54,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["J3"],"y":[47.83],"hovertemplate":"Promotores: 47.83%","type":"bar","name":"Promotores","marker":{"color":"rgba(0,191,111,1)","line":{"color":"rgba(0,191,111,1)"}},"textfont":{"color":"rgba(0,191,111,1)"},"error_y":{"color":"rgba(0,191,111,1)"},"error_x":{"color":"rgba(0,191,111,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Renault" id="tab-4370-9">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9fc6829815e60dc7392a" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-9fc6829815e60dc7392a">{"x":{"visdat":{"2b34247c2581":["function () ","plotlyVisDat"]},"cur_data":"2b34247c2581","attrs":{"2b34247c2581":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#00BF6F","#FCD036","#E53935"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"NPS Veículos Renault","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["Clio","Duster","Fluence","Logan","Sandero"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Clio","Duster","Fluence","Logan","Sandero"],"y":[10.67,18.28,15.7,17.77,25.99],"hovertemplate":["Detratores: 10.67%","Detratores: 18.28%","Detratores: 15.7%","Detratores: 17.77%","Detratores: 25.99%"],"type":"bar","name":"Detratores","marker":{"color":"rgba(229,57,53,1)","line":{"color":"rgba(229,57,53,1)"}},"textfont":{"color":"rgba(229,57,53,1)"},"error_y":{"color":"rgba(229,57,53,1)"},"error_x":{"color":"rgba(229,57,53,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Fluence","Logan","Sandero","Clio","Duster"],"y":[9.5,20.05,24.51,26.33,20.97],"hovertemplate":["Passivos: 9.5%","Passivos: 20.05%","Passivos: 24.51%","Passivos: 26.33%","Passivos: 20.97%"],"type":"bar","name":"Passivos","marker":{"color":"rgba(252,208,54,1)","line":{"color":"rgba(252,208,54,1)"}},"textfont":{"color":"rgba(252,208,54,1)"},"error_y":{"color":"rgba(252,208,54,1)"},"error_x":{"color":"rgba(252,208,54,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Fluence","Logan","Sandero","Clio","Duster"],"y":[74.79,62.19,49.51,63,60.75],"hovertemplate":["Promotores: 74.79%","Promotores: 62.19%","Promotores: 49.51%","Promotores: 63%","Promotores: 60.75%"],"type":"bar","name":"Promotores","marker":{"color":"rgba(0,191,111,1)","line":{"color":"rgba(0,191,111,1)"}},"textfont":{"color":"rgba(0,191,111,1)"},"error_y":{"color":"rgba(0,191,111,1)"},"error_x":{"color":"rgba(0,191,111,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Volkswagen" id="tab-4370-10">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-8ba90948e305fa00e9e3" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-8ba90948e305fa00e9e3">{"x":{"visdat":{"2b34554b7225":["function () ","plotlyVisDat"]},"cur_data":"2b34554b7225","attrs":{"2b34554b7225":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#00BF6F","#FCD036","#E53935"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"NPS Veículos Volkswagen","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["Crossfox","Gol","Jetta","Polo","Saveiro","Voyage"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Saveiro","Polo","Voyage","Gol","Crossfox","Jetta"],"y":[36,10.6,34.6,51.13,28.79,10],"hovertemplate":["Detratores: 36%","Detratores: 10.6%","Detratores: 34.6%","Detratores: 51.13%","Detratores: 28.79%","Detratores: 10%"],"type":"bar","name":"Detratores","marker":{"color":"rgba(229,57,53,1)","line":{"color":"rgba(229,57,53,1)"}},"textfont":{"color":"rgba(229,57,53,1)"},"error_y":{"color":"rgba(229,57,53,1)"},"error_x":{"color":"rgba(229,57,53,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Crossfox","Gol","Saveiro","Jetta","Voyage","Polo"],"y":[20.45,21.04,26.67,17.69,26.98,25.35],"hovertemplate":["Passivos: 20.45%","Passivos: 21.04%","Passivos: 26.67%","Passivos: 17.69%","Passivos: 26.98%","Passivos: 25.35%"],"type":"bar","name":"Passivos","marker":{"color":"rgba(252,208,54,1)","line":{"color":"rgba(252,208,54,1)"}},"textfont":{"color":"rgba(252,208,54,1)"},"error_y":{"color":"rgba(252,208,54,1)"},"error_x":{"color":"rgba(252,208,54,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Gol","Jetta","Polo","Saveiro","Crossfox","Voyage"],"y":[27.83,72.31,64.06,37.33,50.76,38.41],"hovertemplate":["Promotores: 27.83%","Promotores: 72.31%","Promotores: 64.06%","Promotores: 37.33%","Promotores: 50.76%","Promotores: 38.41%"],"type":"bar","name":"Promotores","marker":{"color":"rgba(0,191,111,1)","line":{"color":"rgba(0,191,111,1)"}},"textfont":{"color":"rgba(0,191,111,1)"},"error_y":{"color":"rgba(0,191,111,1)"},"error_x":{"color":"rgba(0,191,111,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+<hr />
+</div>
+</div>
+<div id="csat" class="section level3">
+<h3>CSAT</h3>
+<p>Para fins de melhor visualização dos dados, optou-se pela
+transformação da escala numérica em uma escala de percepção. Diante
+disso, atribuísse os seguintes valores às categorias:</p>
+<ol style="list-style-type: decimal">
+<li>Muito Insatisfeito: [0-2)</li>
+<li>Insatisfeito: [2-4)</li>
+<li>Neutro: [4-6]</li>
+<li>Satisfeito: (6-8]</li>
+<li>Muito Satisfeito: (8-10]</li>
+</ol>
+<div id="section-3"
+class="section level4 tabset tabset-fade tabset-pills">
+<h4 class="tabset tabset-fade tabset-pills"></h4>
+<div class="tabbable">
+<ul class="nav nav-tabs" data-tabsetid="3732">
+<li class="active">
+<a href="#tab-3732-1" data-toggle="tab" data-bs-toggle="tab" data-value="Tabela CSAT por Marca">Tabela CSAT por Marca</a>
+</li>
+<li>
+<a href="#tab-3732-2" data-toggle="tab" data-bs-toggle="tab" data-value="Tabela CSAT por Veículo">Tabela CSAT por Veículo</a>
+</li>
+</ul>
+<div class="tab-content" data-tabsetid="3732">
+<div class="tab-pane active" data-value="Tabela CSAT por Marca" id="tab-3732-1">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-731a540b57d2fbfec19a" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-731a540b57d2fbfec19a">{"x":{"filter":"none","vertical":false,"editable":{"target":"cell","disable":{"columns":null},"numeric":[1,2,3,4,5,6],"date":[]},"data":[["Chevrolet","Fiat","Honda","Volkswagen","Hyundai","JAC","Ford","Renault"],[728,726,246,683,269,49,544,1081],[740,496,95,478,139,24,291,530],[302,124,24,236,36,11,60,128],[83,29,3,70,7,8,14,27],[8,8,0,20,2,0,4,9],[1861,1383,368,1487,453,92,913,1775]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Marca<\/th>\n      <th>Muito Satisfeito<\/th>\n      <th>Satisfeito<\/th>\n      <th>Neutro<\/th>\n      <th>Insatisfeito<\/th>\n      <th>Muito Insatisfeito<\/th>\n      <th>Total<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'width':'40%'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'width':'10%'});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'width':'10%'});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'width':'10%'});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'width':'10%'});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'width':'10%'});\nvar value=data[6]; $(this.api().cell(row, 6).node()).css({'width':'10%'});\n}"},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Tabela CSAT por Veículo" id="tab-3732-2">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-c0dd698c95ab35be2b5a" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-c0dd698c95ab35be2b5a">{"x":{"filter":"none","vertical":false,"editable":{"target":"cell","disable":{"columns":null},"numeric":[2,3,4,5,6,7],"date":[]},"data":[["Chevrolet","Honda","Volkswagen","Fiat","Renault","Chevrolet","Renault","Volkswagen","Fiat","Chevrolet","Renault","Honda","Ford","Ford","Chevrolet","Renault","Volkswagen","Fiat","Chevrolet","Ford","JAC","Ford","Chevrolet","Hyundai","Renault","Fiat","Fiat","Fiat","Volkswagen","Ford","Volkswagen","Hyundai","Ford","Volkswagen"],["Agile","Fit","Crossfox","Strada","Clio","Celta","Logan","Gol","Uno","Fox","Duster","City","KA","Ecosport","Montana","Fluence","Voyage","Cruze","Onix","Palio","J3","Idea","S10","Tucson","Sandero","Bravo","Siena","Punto","Saveiro","Ranger","Jetta","HB20","Focus","Polo"],[153,73,63,71,164,135,278,175,50,216,123,173,68,57,53,207,154,106,110,68,49,140,61,154,309,101,198,200,35,20,112,115,191,144],[144,47,54,55,115,246,119,218,74,237,50,48,102,22,43,26,96,34,29,53,24,76,41,111,220,32,147,154,28,13,17,28,25,65],[62,13,11,17,17,87,34,157,43,116,8,11,18,9,20,7,48,6,4,12,11,20,13,30,62,3,22,33,11,0,1,6,1,8],[26,1,3,1,2,15,6,53,14,36,3,2,5,4,3,1,14,1,1,1,8,4,2,7,15,1,4,8,0,0,0,0,0,0],[4,0,1,2,2,0,2,15,4,4,2,0,2,1,0,1,3,0,0,0,0,0,0,2,2,0,0,2,1,1,0,0,0,0],[389,134,132,146,300,483,439,618,185,609,186,234,195,93,119,242,315,147,144,134,92,240,117,304,608,137,371,397,75,34,130,149,217,217]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Marca<\/th>\n      <th>Carro<\/th>\n      <th>Muito Satisfeito<\/th>\n      <th>Satisfeito<\/th>\n      <th>Neutro<\/th>\n      <th>Insatisfeito<\/th>\n      <th>Muito Insatisfeito<\/th>\n      <th>Total<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7]}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'width':'20%'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'width':'20%'});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'width':'10%'});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'width':'10%'});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'width':'10%'});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'width':'10%'});\nvar value=data[6]; $(this.api().cell(row, 6).node()).css({'width':'10%'});\nvar value=data[7]; $(this.api().cell(row, 7).node()).css({'width':'10%'});\n}"},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+</div>
+<div id="section-4"
+class="section level4 tabset tabset-fade tabset-pills">
+<h4 class="tabset tabset-fade tabset-pills"></h4>
+<div class="tabbable">
+<ul class="nav nav-tabs" data-tabsetid="6603">
+<li class="active">
+<a href="#tab-6603-1" data-toggle="tab" data-bs-toggle="tab" data-value="CSAT Geral">CSAT Geral</a>
+</li>
+<li>
+<a href="#tab-6603-2" data-toggle="tab" data-bs-toggle="tab" data-value="CSAT por Marca">CSAT por Marca</a>
+</li>
+<li>
+<a href="#tab-6603-3" data-toggle="tab" data-bs-toggle="tab" data-value="Chevrolet">Chevrolet</a>
+</li>
+<li>
+<a href="#tab-6603-4" data-toggle="tab" data-bs-toggle="tab" data-value="Fiat">Fiat</a>
+</li>
+<li>
+<a href="#tab-6603-5" data-toggle="tab" data-bs-toggle="tab" data-value="Ford">Ford</a>
+</li>
+<li>
+<a href="#tab-6603-6" data-toggle="tab" data-bs-toggle="tab" data-value="Honda">Honda</a>
+</li>
+<li>
+<a href="#tab-6603-7" data-toggle="tab" data-bs-toggle="tab" data-value="Hyundai">Hyundai</a>
+</li>
+<li>
+<a href="#tab-6603-8" data-toggle="tab" data-bs-toggle="tab" data-value="JAC">JAC</a>
+</li>
+<li>
+<a href="#tab-6603-9" data-toggle="tab" data-bs-toggle="tab" data-value="Renault">Renault</a>
+</li>
+<li>
+<a href="#tab-6603-10" data-toggle="tab" data-bs-toggle="tab" data-value="Volkswagen">Volkswagen</a>
+</li>
+</ul>
+<div class="tab-content" data-tabsetid="6603">
+<div class="tab-pane active" data-value="CSAT Geral" id="tab-6603-1">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ce3a1f07cbf9bdfbb36f" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-ce3a1f07cbf9bdfbb36f">{"x":{"visdat":{"2b342c49cb5":["function () ","plotlyVisDat"]},"cur_data":"2b342c49cb5","attrs":{"2b342c49cb5":{"labels":{},"values":{},"hole":0.5,"marker":{"colors":{}},"textposition":"auto","hoverinfo":"text+percent","text":{},"textinfo":"percent","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["Insatisfeito","Insatisfeito","Insatisfeito","Insatisfeito","Insatisfeito","Insatisfeito","Insatisfeito","Insatisfeito","Muito Insatisfeito","Muito Insatisfeito","Muito Insatisfeito","Muito Insatisfeito","Muito Insatisfeito","Muito Insatisfeito","Muito Satisfeito","Muito Satisfeito","Muito Satisfeito","Muito Satisfeito","Muito Satisfeito","Muito Satisfeito","Muito Satisfeito","Muito Satisfeito","Neutro","Neutro","Neutro","Neutro","Neutro","Neutro","Neutro","Neutro","Satisfeito","Satisfeito","Satisfeito","Satisfeito","Satisfeito","Satisfeito","Satisfeito","Satisfeito"],"values":[83,29,3,70,7,8,14,27,20,8,2,4,9,8,683,269,1081,49,544,726,246,728,128,36,11,236,60,124,24,302,24,291,95,530,740,496,139,478],"hole":0.5,"marker":{"color":"rgba(31,119,180,1)","colors":["#FF9C4D","#FF9C4D","#FF9C4D","#FF9C4D","#FF9C4D","#FF9C4D","#FF9C4D","#FF9C4D","#FF4D4D","#FF4D4D","#FF4D4D","#FF4D4D","#FF4D4D","#FF4D4D","#4DAF7C","#4DAF7C","#4DAF7C","#4DAF7C","#4DAF7C","#4DAF7C","#4DAF7C","#4DAF7C","#FFD24D","#FFD24D","#FFD24D","#FFD24D","#FFD24D","#FFD24D","#FFD24D","#FFD24D","#A5D24D","#A5D24D","#A5D24D","#A5D24D","#A5D24D","#A5D24D","#A5D24D","#A5D24D"],"line":{"color":"rgba(255,255,255,1)"}},"textposition":["auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto","auto"],"hoverinfo":["text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent","text+percent"],"text":["Insatisfeito","Insatisfeito","Insatisfeito","Insatisfeito","Insatisfeito","Insatisfeito","Insatisfeito","Insatisfeito","Muito Insatisfeito","Muito Insatisfeito","Muito Insatisfeito","Muito Insatisfeito","Muito Insatisfeito","Muito Insatisfeito","Muito Satisfeito","Muito Satisfeito","Muito Satisfeito","Muito Satisfeito","Muito Satisfeito","Muito Satisfeito","Muito Satisfeito","Muito Satisfeito","Neutro","Neutro","Neutro","Neutro","Neutro","Neutro","Neutro","Neutro","Satisfeito","Satisfeito","Satisfeito","Satisfeito","Satisfeito","Satisfeito","Satisfeito","Satisfeito"],"textinfo":"percent","type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="CSAT por Marca" id="tab-6603-2">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-701e40a1742538bb204d" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-701e40a1742538bb204d">{"x":{"visdat":{"2b3435344525":["function () ","plotlyVisDat"]},"cur_data":"2b3435344525","attrs":{"2b3435344525":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#4DAF7C","#A5D24D","#FFD24D","#FF9C4D","#FF4D4D"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"CSAT por Marca","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Marca","type":"category","categoryorder":"array","categoryarray":["Chevrolet","Fiat","Ford","Honda","Hyundai","JAC","Renault","Volkswagen"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Volkswagen","Chevrolet","Hyundai","Ford","Renault","Fiat"],"y":[1.34,0.43,0.44,0.44,0.51,0.58],"hovertemplate":["Muito Insatisfeito: 1.34%","Muito Insatisfeito: 0.43%","Muito Insatisfeito: 0.44%","Muito Insatisfeito: 0.44%","Muito Insatisfeito: 0.51%","Muito Insatisfeito: 0.58%"],"type":"bar","name":"Muito Insatisfeito","marker":{"color":"rgba(255,77,77,1)","line":{"color":"rgba(255,77,77,1)"}},"textfont":{"color":"rgba(255,77,77,1)"},"error_y":{"color":"rgba(255,77,77,1)"},"error_x":{"color":"rgba(255,77,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Chevrolet","Fiat","Honda","Volkswagen","Hyundai","JAC","Ford","Renault"],"y":[4.46,2.1,0.82,4.71,1.55,8.7,1.53,1.52],"hovertemplate":["Insatisfeito: 4.46%","Insatisfeito: 2.1%","Insatisfeito: 0.82%","Insatisfeito: 4.71%","Insatisfeito: 1.55%","Insatisfeito: 8.7%","Insatisfeito: 1.53%","Insatisfeito: 1.52%"],"type":"bar","name":"Insatisfeito","marker":{"color":"rgba(255,156,77,1)","line":{"color":"rgba(255,156,77,1)"}},"textfont":{"color":"rgba(255,156,77,1)"},"error_y":{"color":"rgba(255,156,77,1)"},"error_x":{"color":"rgba(255,156,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Renault","Hyundai","JAC","Volkswagen","Ford","Fiat","Honda","Chevrolet"],"y":[7.21,7.95,11.96,15.87,6.57,8.97,6.52,16.23],"hovertemplate":["Neutro: 7.21%","Neutro: 7.95%","Neutro: 11.96%","Neutro: 15.87%","Neutro: 6.57%","Neutro: 8.97%","Neutro: 6.52%","Neutro: 16.23%"],"type":"bar","name":"Neutro","marker":{"color":"rgba(255,210,77,1)","line":{"color":"rgba(255,210,77,1)"}},"textfont":{"color":"rgba(255,210,77,1)"},"error_y":{"color":"rgba(255,210,77,1)"},"error_x":{"color":"rgba(255,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["JAC","Ford","Honda","Renault","Chevrolet","Fiat","Hyundai","Volkswagen"],"y":[26.09,31.87,25.82,29.86,39.76,35.86,30.68,32.15],"hovertemplate":["Satisfeito: 26.09%","Satisfeito: 31.87%","Satisfeito: 25.82%","Satisfeito: 29.86%","Satisfeito: 39.76%","Satisfeito: 35.86%","Satisfeito: 30.68%","Satisfeito: 32.15%"],"type":"bar","name":"Satisfeito","marker":{"color":"rgba(165,210,77,1)","line":{"color":"rgba(165,210,77,1)"}},"textfont":{"color":"rgba(165,210,77,1)"},"error_y":{"color":"rgba(165,210,77,1)"},"error_x":{"color":"rgba(165,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Volkswagen","Hyundai","Renault","JAC","Ford","Fiat","Honda","Chevrolet"],"y":[45.93,59.38,60.9,53.26,59.58,52.49,66.85,39.12],"hovertemplate":["Muito Satisfeito: 45.93%","Muito Satisfeito: 59.38%","Muito Satisfeito: 60.9%","Muito Satisfeito: 53.26%","Muito Satisfeito: 59.58%","Muito Satisfeito: 52.49%","Muito Satisfeito: 66.85%","Muito Satisfeito: 39.12%"],"type":"bar","name":"Muito Satisfeito","marker":{"color":"rgba(77,175,124,1)","line":{"color":"rgba(77,175,124,1)"}},"textfont":{"color":"rgba(77,175,124,1)"},"error_y":{"color":"rgba(77,175,124,1)"},"error_x":{"color":"rgba(77,175,124,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Chevrolet" id="tab-6603-3">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e6f7f94eb1d7bae9d78a" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-e6f7f94eb1d7bae9d78a">{"x":{"visdat":{"2b34279d10ce":["function () ","plotlyVisDat"]},"cur_data":"2b34279d10ce","attrs":{"2b34279d10ce":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#4DAF7C","#A5D24D","#FFD24D","#FF9C4D","#FF4D4D"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"CSAT Veículos Chevrolet","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["Agile","Celta","Fox","Montana","Onix","S10"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Agile","Fox"],"y":[1.03,0.66],"hovertemplate":["Muito Insatisfeito: 1.03%","Muito Insatisfeito: 0.66%"],"type":"bar","name":"Muito Insatisfeito","marker":{"color":"rgba(255,77,77,1)","line":{"color":"rgba(255,77,77,1)"}},"textfont":{"color":"rgba(255,77,77,1)"},"error_y":{"color":"rgba(255,77,77,1)"},"error_x":{"color":"rgba(255,77,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Agile","Celta","Fox","Montana","Onix","S10"],"y":[6.68,3.11,5.91,2.52,0.69,1.71],"hovertemplate":["Insatisfeito: 6.68%","Insatisfeito: 3.11%","Insatisfeito: 5.91%","Insatisfeito: 2.52%","Insatisfeito: 0.69%","Insatisfeito: 1.71%"],"type":"bar","name":"Insatisfeito","marker":{"color":"rgba(255,156,77,1)","line":{"color":"rgba(255,156,77,1)"}},"textfont":{"color":"rgba(255,156,77,1)"},"error_y":{"color":"rgba(255,156,77,1)"},"error_x":{"color":"rgba(255,156,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Agile","Fox","Onix","Celta","Montana","S10"],"y":[15.94,19.05,2.78,18.01,16.81,11.11],"hovertemplate":["Neutro: 15.94%","Neutro: 19.05%","Neutro: 2.78%","Neutro: 18.01%","Neutro: 16.81%","Neutro: 11.11%"],"type":"bar","name":"Neutro","marker":{"color":"rgba(255,210,77,1)","line":{"color":"rgba(255,210,77,1)"}},"textfont":{"color":"rgba(255,210,77,1)"},"error_y":{"color":"rgba(255,210,77,1)"},"error_x":{"color":"rgba(255,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Onix","Agile","Montana","Celta","Fox","S10"],"y":[20.14,37.02,36.13,50.93,38.92,35.04],"hovertemplate":["Satisfeito: 20.14%","Satisfeito: 37.02%","Satisfeito: 36.13%","Satisfeito: 50.93%","Satisfeito: 38.92%","Satisfeito: 35.04%"],"type":"bar","name":"Satisfeito","marker":{"color":"rgba(165,210,77,1)","line":{"color":"rgba(165,210,77,1)"}},"textfont":{"color":"rgba(165,210,77,1)"},"error_y":{"color":"rgba(165,210,77,1)"},"error_x":{"color":"rgba(165,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Celta","Agile","Onix","Montana","Fox","S10"],"y":[27.95,39.33,76.39,44.54,35.47,52.14],"hovertemplate":["Muito Satisfeito: 27.95%","Muito Satisfeito: 39.33%","Muito Satisfeito: 76.39%","Muito Satisfeito: 44.54%","Muito Satisfeito: 35.47%","Muito Satisfeito: 52.14%"],"type":"bar","name":"Muito Satisfeito","marker":{"color":"rgba(77,175,124,1)","line":{"color":"rgba(77,175,124,1)"}},"textfont":{"color":"rgba(77,175,124,1)"},"error_y":{"color":"rgba(77,175,124,1)"},"error_x":{"color":"rgba(77,175,124,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Fiat" id="tab-6603-4">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b9c8a9f9b2e2732956af" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-b9c8a9f9b2e2732956af">{"x":{"visdat":{"2b3417251f8a":["function () ","plotlyVisDat"]},"cur_data":"2b3417251f8a","attrs":{"2b3417251f8a":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#4DAF7C","#A5D24D","#FFD24D","#FF9C4D","#FF4D4D"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"CSAT Veículos Fiat","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["Bravo","Cruze","Punto","Siena","Strada","Uno"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Strada","Punto","Uno"],"y":[1.37,0.5,2.16],"hovertemplate":["Muito Insatisfeito: 1.37%","Muito Insatisfeito: 0.5%","Muito Insatisfeito: 2.16%"],"type":"bar","name":"Muito Insatisfeito","marker":{"color":"rgba(255,77,77,1)","line":{"color":"rgba(255,77,77,1)"}},"textfont":{"color":"rgba(255,77,77,1)"},"error_y":{"color":"rgba(255,77,77,1)"},"error_x":{"color":"rgba(255,77,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Strada","Uno","Cruze","Bravo","Siena","Punto"],"y":[0.68,7.57,0.68,0.73,1.08,2.02],"hovertemplate":["Insatisfeito: 0.68%","Insatisfeito: 7.57%","Insatisfeito: 0.68%","Insatisfeito: 0.73%","Insatisfeito: 1.08%","Insatisfeito: 2.02%"],"type":"bar","name":"Insatisfeito","marker":{"color":"rgba(255,156,77,1)","line":{"color":"rgba(255,156,77,1)"}},"textfont":{"color":"rgba(255,156,77,1)"},"error_y":{"color":"rgba(255,156,77,1)"},"error_x":{"color":"rgba(255,156,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Strada","Bravo","Cruze","Punto","Siena","Uno"],"y":[11.64,2.19,4.08,8.31,5.93,23.24],"hovertemplate":["Neutro: 11.64%","Neutro: 2.19%","Neutro: 4.08%","Neutro: 8.31%","Neutro: 5.93%","Neutro: 23.24%"],"type":"bar","name":"Neutro","marker":{"color":"rgba(255,210,77,1)","line":{"color":"rgba(255,210,77,1)"}},"textfont":{"color":"rgba(255,210,77,1)"},"error_y":{"color":"rgba(255,210,77,1)"},"error_x":{"color":"rgba(255,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Bravo","Uno","Punto","Strada","Cruze","Siena"],"y":[23.36,40,38.79,37.67,23.13,39.62],"hovertemplate":["Satisfeito: 23.36%","Satisfeito: 40%","Satisfeito: 38.79%","Satisfeito: 37.67%","Satisfeito: 23.13%","Satisfeito: 39.62%"],"type":"bar","name":"Satisfeito","marker":{"color":"rgba(165,210,77,1)","line":{"color":"rgba(165,210,77,1)"}},"textfont":{"color":"rgba(165,210,77,1)"},"error_y":{"color":"rgba(165,210,77,1)"},"error_x":{"color":"rgba(165,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Cruze","Strada","Siena","Bravo","Uno","Punto"],"y":[72.11,48.63,53.37,73.72,27.03,50.38],"hovertemplate":["Muito Satisfeito: 72.11%","Muito Satisfeito: 48.63%","Muito Satisfeito: 53.37%","Muito Satisfeito: 73.72%","Muito Satisfeito: 27.03%","Muito Satisfeito: 50.38%"],"type":"bar","name":"Muito Satisfeito","marker":{"color":"rgba(77,175,124,1)","line":{"color":"rgba(77,175,124,1)"}},"textfont":{"color":"rgba(77,175,124,1)"},"error_y":{"color":"rgba(77,175,124,1)"},"error_x":{"color":"rgba(77,175,124,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Ford" id="tab-6603-5">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-3749e40029670329f299" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-3749e40029670329f299">{"x":{"visdat":{"2b3425f414e1":["function () ","plotlyVisDat"]},"cur_data":"2b3425f414e1","attrs":{"2b3425f414e1":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#4DAF7C","#A5D24D","#FFD24D","#FF9C4D","#FF4D4D"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"CSAT Veículos Ford","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["Ecosport","Focus","Idea","KA","Palio","Ranger"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Ecosport","KA","Ranger"],"y":[1.08,1.03,2.94],"hovertemplate":["Muito Insatisfeito: 1.08%","Muito Insatisfeito: 1.03%","Muito Insatisfeito: 2.94%"],"type":"bar","name":"Muito Insatisfeito","marker":{"color":"rgba(255,77,77,1)","line":{"color":"rgba(255,77,77,1)"}},"textfont":{"color":"rgba(255,77,77,1)"},"error_y":{"color":"rgba(255,77,77,1)"},"error_x":{"color":"rgba(255,77,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["KA","Ecosport","Palio","Idea"],"y":[2.56,4.3,0.75,1.67],"hovertemplate":["Insatisfeito: 2.56%","Insatisfeito: 4.3%","Insatisfeito: 0.75%","Insatisfeito: 1.67%"],"type":"bar","name":"Insatisfeito","marker":{"color":"rgba(255,156,77,1)","line":{"color":"rgba(255,156,77,1)"}},"textfont":{"color":"rgba(255,156,77,1)"},"error_y":{"color":"rgba(255,156,77,1)"},"error_x":{"color":"rgba(255,156,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Ecosport","Focus","KA","Palio","Idea"],"y":[9.68,0.46,9.23,8.96,8.33],"hovertemplate":["Neutro: 9.68%","Neutro: 0.46%","Neutro: 9.23%","Neutro: 8.96%","Neutro: 8.33%"],"type":"bar","name":"Neutro","marker":{"color":"rgba(255,210,77,1)","line":{"color":"rgba(255,210,77,1)"}},"textfont":{"color":"rgba(255,210,77,1)"},"error_y":{"color":"rgba(255,210,77,1)"},"error_x":{"color":"rgba(255,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Ranger","KA","Ecosport","Palio","Focus","Idea"],"y":[38.24,52.31,23.66,39.55,11.52,31.67],"hovertemplate":["Satisfeito: 38.24%","Satisfeito: 52.31%","Satisfeito: 23.66%","Satisfeito: 39.55%","Satisfeito: 11.52%","Satisfeito: 31.67%"],"type":"bar","name":"Satisfeito","marker":{"color":"rgba(165,210,77,1)","line":{"color":"rgba(165,210,77,1)"}},"textfont":{"color":"rgba(165,210,77,1)"},"error_y":{"color":"rgba(165,210,77,1)"},"error_x":{"color":"rgba(165,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Ecosport","Focus","KA","Palio","Ranger","Idea"],"y":[61.29,88.02,34.87,50.75,58.82,58.33],"hovertemplate":["Muito Satisfeito: 61.29%","Muito Satisfeito: 88.02%","Muito Satisfeito: 34.87%","Muito Satisfeito: 50.75%","Muito Satisfeito: 58.82%","Muito Satisfeito: 58.33%"],"type":"bar","name":"Muito Satisfeito","marker":{"color":"rgba(77,175,124,1)","line":{"color":"rgba(77,175,124,1)"}},"textfont":{"color":"rgba(77,175,124,1)"},"error_y":{"color":"rgba(77,175,124,1)"},"error_x":{"color":"rgba(77,175,124,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Honda" id="tab-6603-6">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1b1a7b3a84029972ec52" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-1b1a7b3a84029972ec52">{"x":{"visdat":{"2b3425226c13":["function () ","plotlyVisDat"]},"cur_data":"2b3425226c13","attrs":{"2b3425226c13":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#4DAF7C","#A5D24D","#FFD24D","#FF9C4D","#FF4D4D"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"CSAT Veículos Honda","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["City","Fit"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Fit","City"],"y":[0.75,0.85],"hovertemplate":["Insatisfeito: 0.75%","Insatisfeito: 0.85%"],"type":"bar","name":"Insatisfeito","marker":{"color":"rgba(255,156,77,1)","line":{"color":"rgba(255,156,77,1)"}},"textfont":{"color":"rgba(255,156,77,1)"},"error_y":{"color":"rgba(255,156,77,1)"},"error_x":{"color":"rgba(255,156,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Fit","City"],"y":[9.7,4.7],"hovertemplate":["Neutro: 9.7%","Neutro: 4.7%"],"type":"bar","name":"Neutro","marker":{"color":"rgba(255,210,77,1)","line":{"color":"rgba(255,210,77,1)"}},"textfont":{"color":"rgba(255,210,77,1)"},"error_y":{"color":"rgba(255,210,77,1)"},"error_x":{"color":"rgba(255,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["City","Fit"],"y":[20.51,35.07],"hovertemplate":["Satisfeito: 20.51%","Satisfeito: 35.07%"],"type":"bar","name":"Satisfeito","marker":{"color":"rgba(165,210,77,1)","line":{"color":"rgba(165,210,77,1)"}},"textfont":{"color":"rgba(165,210,77,1)"},"error_y":{"color":"rgba(165,210,77,1)"},"error_x":{"color":"rgba(165,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["City","Fit"],"y":[73.93,54.48],"hovertemplate":["Muito Satisfeito: 73.93%","Muito Satisfeito: 54.48%"],"type":"bar","name":"Muito Satisfeito","marker":{"color":"rgba(77,175,124,1)","line":{"color":"rgba(77,175,124,1)"}},"textfont":{"color":"rgba(77,175,124,1)"},"error_y":{"color":"rgba(77,175,124,1)"},"error_x":{"color":"rgba(77,175,124,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Hyundai" id="tab-6603-7">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-667af7c9c3d1a61bc9eb" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-667af7c9c3d1a61bc9eb">{"x":{"visdat":{"2b34193a3165":["function () ","plotlyVisDat"]},"cur_data":"2b34193a3165","attrs":{"2b34193a3165":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#4DAF7C","#A5D24D","#FFD24D","#FF9C4D","#FF4D4D"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"CSAT Veículos Hyundai","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["HB20","Tucson"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Tucson"],"y":[0.66],"hovertemplate":"Muito Insatisfeito: 0.66%","type":"bar","name":"Muito Insatisfeito","marker":{"color":"rgba(255,77,77,1)","line":{"color":"rgba(255,77,77,1)"}},"textfont":{"color":"rgba(255,77,77,1)"},"error_y":{"color":"rgba(255,77,77,1)"},"error_x":{"color":"rgba(255,77,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Tucson"],"y":[2.3],"hovertemplate":"Insatisfeito: 2.3%","type":"bar","name":"Insatisfeito","marker":{"color":"rgba(255,156,77,1)","line":{"color":"rgba(255,156,77,1)"}},"textfont":{"color":"rgba(255,156,77,1)"},"error_y":{"color":"rgba(255,156,77,1)"},"error_x":{"color":"rgba(255,156,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Tucson","HB20"],"y":[9.87,4.03],"hovertemplate":["Neutro: 9.87%","Neutro: 4.03%"],"type":"bar","name":"Neutro","marker":{"color":"rgba(255,210,77,1)","line":{"color":"rgba(255,210,77,1)"}},"textfont":{"color":"rgba(255,210,77,1)"},"error_y":{"color":"rgba(255,210,77,1)"},"error_x":{"color":"rgba(255,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["HB20","Tucson"],"y":[18.79,36.51],"hovertemplate":["Satisfeito: 18.79%","Satisfeito: 36.51%"],"type":"bar","name":"Satisfeito","marker":{"color":"rgba(165,210,77,1)","line":{"color":"rgba(165,210,77,1)"}},"textfont":{"color":"rgba(165,210,77,1)"},"error_y":{"color":"rgba(165,210,77,1)"},"error_x":{"color":"rgba(165,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["HB20","Tucson"],"y":[77.18,50.66],"hovertemplate":["Muito Satisfeito: 77.18%","Muito Satisfeito: 50.66%"],"type":"bar","name":"Muito Satisfeito","marker":{"color":"rgba(77,175,124,1)","line":{"color":"rgba(77,175,124,1)"}},"textfont":{"color":"rgba(77,175,124,1)"},"error_y":{"color":"rgba(77,175,124,1)"},"error_x":{"color":"rgba(77,175,124,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="JAC" id="tab-6603-8">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-eef64853f042323569fd" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-eef64853f042323569fd">{"x":{"visdat":{"2b344c19630b":["function () ","plotlyVisDat"]},"cur_data":"2b344c19630b","attrs":{"2b344c19630b":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#4DAF7C","#A5D24D","#FFD24D","#FF9C4D","#FF4D4D"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"CSAT Veículos JAC"},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["J3"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência"},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["J3"],"y":[8.7],"hovertemplate":"Insatisfeito: 8.7%","type":"bar","name":"Insatisfeito","marker":{"color":"rgba(255,156,77,1)","line":{"color":"rgba(255,156,77,1)"}},"textfont":{"color":"rgba(255,156,77,1)"},"error_y":{"color":"rgba(255,156,77,1)"},"error_x":{"color":"rgba(255,156,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["J3"],"y":[11.96],"hovertemplate":"Neutro: 11.96%","type":"bar","name":"Neutro","marker":{"color":"rgba(255,210,77,1)","line":{"color":"rgba(255,210,77,1)"}},"textfont":{"color":"rgba(255,210,77,1)"},"error_y":{"color":"rgba(255,210,77,1)"},"error_x":{"color":"rgba(255,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["J3"],"y":[26.09],"hovertemplate":"Satisfeito: 26.09%","type":"bar","name":"Satisfeito","marker":{"color":"rgba(165,210,77,1)","line":{"color":"rgba(165,210,77,1)"}},"textfont":{"color":"rgba(165,210,77,1)"},"error_y":{"color":"rgba(165,210,77,1)"},"error_x":{"color":"rgba(165,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["J3"],"y":[53.26],"hovertemplate":"Muito Satisfeito: 53.26%","type":"bar","name":"Muito Satisfeito","marker":{"color":"rgba(77,175,124,1)","line":{"color":"rgba(77,175,124,1)"}},"textfont":{"color":"rgba(77,175,124,1)"},"error_y":{"color":"rgba(77,175,124,1)"},"error_x":{"color":"rgba(77,175,124,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Renault" id="tab-6603-9">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-32a68d24eeb7cc22c968" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-32a68d24eeb7cc22c968">{"x":{"visdat":{"2b341e711e1f":["function () ","plotlyVisDat"]},"cur_data":"2b341e711e1f","attrs":{"2b341e711e1f":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#4DAF7C","#A5D24D","#FFD24D","#FF9C4D","#FF4D4D"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"CSAT Veículos Renault","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["Clio","Duster","Fluence","Logan","Sandero"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Logan","Fluence","Duster","Clio","Sandero"],"y":[0.46,0.41,1.08,0.67,0.33],"hovertemplate":["Muito Insatisfeito: 0.46%","Muito Insatisfeito: 0.41%","Muito Insatisfeito: 1.08%","Muito Insatisfeito: 0.67%","Muito Insatisfeito: 0.33%"],"type":"bar","name":"Muito Insatisfeito","marker":{"color":"rgba(255,77,77,1)","line":{"color":"rgba(255,77,77,1)"}},"textfont":{"color":"rgba(255,77,77,1)"},"error_y":{"color":"rgba(255,77,77,1)"},"error_x":{"color":"rgba(255,77,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Clio","Logan","Duster","Fluence","Sandero"],"y":[0.67,1.37,1.61,0.41,2.47],"hovertemplate":["Insatisfeito: 0.67%","Insatisfeito: 1.37%","Insatisfeito: 1.61%","Insatisfeito: 0.41%","Insatisfeito: 2.47%"],"type":"bar","name":"Insatisfeito","marker":{"color":"rgba(255,156,77,1)","line":{"color":"rgba(255,156,77,1)"}},"textfont":{"color":"rgba(255,156,77,1)"},"error_y":{"color":"rgba(255,156,77,1)"},"error_x":{"color":"rgba(255,156,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Duster","Sandero","Clio","Fluence","Logan"],"y":[4.3,10.2,5.67,2.89,7.74],"hovertemplate":["Neutro: 4.3%","Neutro: 10.2%","Neutro: 5.67%","Neutro: 2.89%","Neutro: 7.74%"],"type":"bar","name":"Neutro","marker":{"color":"rgba(255,210,77,1)","line":{"color":"rgba(255,210,77,1)"}},"textfont":{"color":"rgba(255,210,77,1)"},"error_y":{"color":"rgba(255,210,77,1)"},"error_x":{"color":"rgba(255,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Fluence","Clio","Duster","Sandero","Logan"],"y":[10.74,38.33,26.88,36.18,27.11],"hovertemplate":["Satisfeito: 10.74%","Satisfeito: 38.33%","Satisfeito: 26.88%","Satisfeito: 36.18%","Satisfeito: 27.11%"],"type":"bar","name":"Satisfeito","marker":{"color":"rgba(165,210,77,1)","line":{"color":"rgba(165,210,77,1)"}},"textfont":{"color":"rgba(165,210,77,1)"},"error_y":{"color":"rgba(165,210,77,1)"},"error_x":{"color":"rgba(165,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Fluence","Clio","Duster","Logan","Sandero"],"y":[85.54,54.67,66.13,63.33,50.82],"hovertemplate":["Muito Satisfeito: 85.54%","Muito Satisfeito: 54.67%","Muito Satisfeito: 66.13%","Muito Satisfeito: 63.33%","Muito Satisfeito: 50.82%"],"type":"bar","name":"Muito Satisfeito","marker":{"color":"rgba(77,175,124,1)","line":{"color":"rgba(77,175,124,1)"}},"textfont":{"color":"rgba(77,175,124,1)"},"error_y":{"color":"rgba(77,175,124,1)"},"error_x":{"color":"rgba(77,175,124,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="tab-pane" data-value="Volkswagen" id="tab-6603-10">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-a3a570d3687845e2ded1" style="width:100%;height:400px;"></div>
+<script type="application/json" data-for="htmlwidget-a3a570d3687845e2ded1">{"x":{"visdat":{"2b341eb8207e":["function () ","plotlyVisDat"]},"cur_data":"2b341eb8207e","attrs":{"2b341eb8207e":{"x":{},"y":{},"hovertemplate":{},"color":{},"colors":["#4DAF7C","#A5D24D","#FFD24D","#FF9C4D","#FF4D4D"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"CSAT Veículos Volkswagen","y":0.95},"xaxis":{"domain":[0,1],"automargin":true,"title":"Veículo","type":"category","categoryorder":"array","categoryarray":["Crossfox","Gol","Jetta","Polo","Saveiro","Voyage"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Frequência","range":[0,110]},"barmode":"stack","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Saveiro","Voyage","Crossfox","Gol"],"y":[1.33,0.95,0.76,2.43],"hovertemplate":["Muito Insatisfeito: 1.33%","Muito Insatisfeito: 0.95%","Muito Insatisfeito: 0.76%","Muito Insatisfeito: 2.43%"],"type":"bar","name":"Muito Insatisfeito","marker":{"color":"rgba(255,77,77,1)","line":{"color":"rgba(255,77,77,1)"}},"textfont":{"color":"rgba(255,77,77,1)"},"error_y":{"color":"rgba(255,77,77,1)"},"error_x":{"color":"rgba(255,77,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Crossfox","Gol","Voyage"],"y":[2.27,8.58,4.44],"hovertemplate":["Insatisfeito: 2.27%","Insatisfeito: 8.58%","Insatisfeito: 4.44%"],"type":"bar","name":"Insatisfeito","marker":{"color":"rgba(255,156,77,1)","line":{"color":"rgba(255,156,77,1)"}},"textfont":{"color":"rgba(255,156,77,1)"},"error_y":{"color":"rgba(255,156,77,1)"},"error_x":{"color":"rgba(255,156,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Saveiro","Polo","Voyage","Jetta","Crossfox","Gol"],"y":[14.67,3.69,15.24,0.77,8.33,25.4],"hovertemplate":["Neutro: 14.67%","Neutro: 3.69%","Neutro: 15.24%","Neutro: 0.77%","Neutro: 8.33%","Neutro: 25.4%"],"type":"bar","name":"Neutro","marker":{"color":"rgba(255,210,77,1)","line":{"color":"rgba(255,210,77,1)"}},"textfont":{"color":"rgba(255,210,77,1)"},"error_y":{"color":"rgba(255,210,77,1)"},"error_x":{"color":"rgba(255,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Jetta","Gol","Polo","Saveiro","Crossfox","Voyage"],"y":[13.08,35.28,29.95,37.33,40.91,30.48],"hovertemplate":["Satisfeito: 13.08%","Satisfeito: 35.28%","Satisfeito: 29.95%","Satisfeito: 37.33%","Satisfeito: 40.91%","Satisfeito: 30.48%"],"type":"bar","name":"Satisfeito","marker":{"color":"rgba(165,210,77,1)","line":{"color":"rgba(165,210,77,1)"}},"textfont":{"color":"rgba(165,210,77,1)"},"error_y":{"color":"rgba(165,210,77,1)"},"error_x":{"color":"rgba(165,210,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Saveiro","Jetta","Crossfox","Voyage","Polo","Gol"],"y":[46.67,86.15,47.73,48.89,66.36,28.32],"hovertemplate":["Muito Satisfeito: 46.67%","Muito Satisfeito: 86.15%","Muito Satisfeito: 47.73%","Muito Satisfeito: 48.89%","Muito Satisfeito: 66.36%","Muito Satisfeito: 28.32%"],"type":"bar","name":"Muito Satisfeito","marker":{"color":"rgba(77,175,124,1)","line":{"color":"rgba(77,175,124,1)"}},"textfont":{"color":"rgba(77,175,124,1)"},"error_y":{"color":"rgba(77,175,124,1)"},"error_x":{"color":"rgba(77,175,124,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

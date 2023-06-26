@@ -1,0 +1,44 @@
+---
+title: "Dashboard"
+output:
+  html_document:                    
+    #toc: true                       
+    #toc_depth: 3                    
+    #toc_float:                      
+    #  collapsed: true
+    #  smooth_scroll: true
+    #number_sections: true           
+    # theme: darkly
+    #spacelab
+    #default,cerulean,journal,flatly,readable,spacelab,
+    #united,cosmo,lumen,paper,sandstone,simplex,yeti
+    
+    highlight: espresso
+    #default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, and textmate
+    #css: styles.css                
+    fig_width: 7                    
+    fig_height: 6                   
+    fig_caption: true               
+    fig_align: 'center'
+    #code_folding: hide              
+    #keep_md: true
+---
+
+<style>
+  body {
+    text-align: justify;
+  }
+</style>
+
+---
+
+
+Para uma melhor visualização dos resultados da pesquisa, foi elaborado um dashboard com Gráficos e Tabela pelo Power BI que permite a visualização interativa dos dados.
+
+Link para acesso ao Dashboard:
+
+https://app.powerbi.com/view?r=eyJrIjoiZDEwZDMzNmUtMzA0OS00NTJhLTg2MDItMmQ3ZDg5NjUwZjgzIiwidCI6ImMzN2IzN2EzLWU5ZTItNDJmOS1iYzY3LTRiOWI3MzhlMWRmMCJ9
+
+
+
+---

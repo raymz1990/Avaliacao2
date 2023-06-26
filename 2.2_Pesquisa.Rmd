@@ -1,5 +1,5 @@
 ---
-title: "Perfis dos Veículos Vendidos"
+title: "Pesquisa de Satifação dos clientes"
 output:
   html_document:                    
     #toc: true                       
@@ -41,297 +41,380 @@ source("./R/dados.R")
 
 ```{r, echo=FALSE}
 
-# Contagem de carros por marca e carro
-dados_carro <- dados2 %>%
-  group_by(marca, carro) %>%
-  summarise(quantidade = n(), .groups = "drop") %>%
-  arrange(marca, carro)
-dados_carro <- data.frame(dados_carro)
-
-# Adicionar coluna de soma da quantidade por marca
-dados_carro <- dados_carro %>%
-  group_by(marca) %>%
-  mutate(total_marca = ifelse(row_number() == 1, sum(quantidade), 0))
-
-# Conectar cores aos dados
-dados_carro <- merge(dados_carro, dados_cores, by = "marca", all = TRUE)
-
-# total veiculos
-total_veiculos <- sum(dados_carro$quantidade)
-total_veiculos <- format(total_veiculos, big.mark = ".", decimal.mark = ",")
-
-# total tipo veiculos
-tipo_veiculos <- length(unique(dados_carro$carro))
-
-# total marca
-quantidade_marca <- length(unique(dados_carro$marca))
-
-
 
 ```
 
 
 ### 
 
-Nesta seção, apresentaremos uma análise dos veículos que foram vendidos pela nossa empresa nos últimos anos. Essa análise nos permitirá compreender melhor o tipo de veículo que tem sido mais procurado pelos nossos clientes e identificar possíveis tendências de mercado.
+A satisfação do cliente é um aspecto fundamental para o sucesso de qualquer empresa. Compreender as expectativas, necessidades e percepções dos nossos clientes é essencial para oferecer um serviço de qualidade e criar relacionamentos. Nesse contexto, a pesquisa de satisfação do cliente desempenha um papel crucial.
 
-Durante o período considerado, um total de **`r total_veiculos` veículos** foram comercializados pela nossa empresa, abrangendo **`r tipo_veiculos`** tipos diferentes de veículos de **`r quantidade_marca`** marcas distintas.
+Nesta seção, abordaremos os principais resultados obtidos na pesquisa através dos índices **NPS** e **CSAT**, que visam mensurar o quanto o cliente está satisfeito em relação aos nossos produtos e serviços. 
 
-A seguir, exploraremos os detalhes desses veículos vendidos, para conhecer as marcas mais populares e os tipos de veículos mais vendidos de cada marca, que nos ajudarão a entender melhor  as preferências do mercado.
+---
+
+### O que é NPS e CSAT?
+
+Dois indicadores bastante eficientes e importantes na avaliação de satisfação do clientes são o NPS e CSAT, que vamos discorrer ao longo desta seção.
+
+#### **1. NPS - Net Promoter Score**
+
+O <i> Net Promoter Score </i> é uma métrica usada nos programas de experiência do cliente para medir a fidelidade dos clientes a uma empresa. O Net Promoter Score costuma ser medido com pesquisas NPS de pergunta única e retratado em forma de uma pontuação de -100 à 100. Quanto maior o NPS, melhor.
+
+O <i> Net Promoter Score </i> é considerado o padrão ouro das métricas de experiência do cliente. Desenvolvido em 2003 pela **Bain and Company**, ele hoje é usado por milhões de empresas para monitorar a percepção dos clientes a respeito da marca através de pesquisas NPS.
+
+A pesquisa NPS é feita com uma pergunta simples:
+
+Qual é a probabilidade de você recomendar a empresa o produto ou serviço para um amigo?
+
+Os participantes dão uma nota entre 0 e 10, sendo 0 nada provável e 10 muito provável e, dependendo das respostas, eles entram em uma das 3 categorias de Net Promoter Score abaixo:
+
+* Quem dá uma pontuação de 9 ou 10 é considerado promotor. Para a pesquisa NPS, os promotores são pessoas que costumam ser entusiastas da marca.
+* Quem dá uma pontuação de 7 ou 8 é considerado passivo. Para a pesquisa NPS, são as pessoas que estão satisfeitas com o serviço, mas não a ponto de serem promotoras.
+* Quem dá uma pontuação de 0 a 6 é considerado detrator da marca. Para a pesquisa NPS, são pessoas insatisfeitas que não devem comprar o seu produto novamente e podem até incentivar outras pessoas a não comprar.
+
+Para se obter o índice de NPS, basta subtrair o percentual de detratores do percentual de promotores.
+
+![](imagens/Indice NPS.png)
+
+
+#### **2. CSAT - Customer Satisfaction Score**
+
+O <i> Customer Satisfaction Score </i> é uma métrica utilizada para saber a porcentagem de clientes satisfeitos com sua empresa, normalmente identificada por uma pequena pesquisa de satisfação.
+
+Seu uso pode facilitar a descoberta de informações sobre as etapas da jornada do cliente e qual experiência ele teve nos diferentes pontos de contato com a marca.
+
+A marca pode utilizar o CSAT para descobrir se o cliente está feliz com o produto ou serviço contratado, o atendimento prestado pela empresa, a assistência pós compra, entre outros. 
+
+Após um contato com sua marca, o cliente pode responder a algumas perguntas simples como: 
+
+* Qual o seu nível de satisfação com o nosso produto? 
+* Qual o seu nível de satisfação com a entrega realizada?
+* Qual o seu nível de satisfação com o atendimento que acabou de receber? 
+
+Para a resposta, a empresa pode oferecer duas modalidades: 
+
+* Escala numérica: avaliação por notas de 0 a 10;
+* Escala de percepção: avaliação por termos como “satisfeito”, “indiferente”, “pouco satisfeito”, “ótimo”, “regular”, “ruim”.
+
+Além de coletar o feedback dos usuários, o CSAT pode evidenciar processos que precisam de melhorias dentro da sua empresa.
+
+Entre os maiores benefícios de realizar o CSAT, podemos citar:
+
+* Fácil implementação e baixo custo
+* Fortalecimento da relação entre cliente e empresa
+* Dados e insights para melhoria de processos e serviços
+
+
+---
+
+### NPS
+
+Na análise do <i> Net Promoter Score </i> é possível observar que um total de **`r Promotores_total`** donos de veículos tem uma Recomendação positiva, performando **`r Promotores`%**, enquanto que os Detratores somaram **`r Detratores_total`** representando **`r Detratores`%**. Dessa forma, o índice calculado da amostra foi de **`r NPS_indice`%**.
+
+
 
 
 #### {.tabset .tabset-fade .tabset-pills}
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
 
-library(plotly)
-library(dplyr)
+# Tabela NPS Marca
+NPS_marca <- DT::datatable(
+  dados_NPS_Geral2[,c('Marca',
+                     'Promotores',
+                     'Passivos',
+                     'Detratores',
+                     'Total',
+                     'NPS')],  
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T)  %>%
+  formatStyle(columns = c("Marca"), width = "40%") %>%
+  formatStyle(columns = c('Promotores'), width = "12.5%") %>%
+  formatStyle(columns = c('Passivos'), width = "12.5%") %>%
+  formatStyle(columns = c('Detratores'), width = "12.5%") %>%
+  formatStyle(columns = c('Total'), width = "12.5%") %>%
+  formatStyle(columns = c('NPS'), width = "10%")
 
-# summarize data frame to get parent container totals
-d1 <- dados_carro[, c("marca", "carro", "quantidade", "cor")]
+# Tabela NPS Carro
+NPS_carro <- DT::datatable(
+  dados_NPS_Geral[,c('Marca', 
+                     'Carro',
+                     'Promotores',
+                     'Passivos',
+                     'Detratores',
+                     'Total',
+                     'NPS')],  
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T)  %>%
+  formatStyle(columns = c("Marca"), width = "20%") %>%
+  formatStyle(columns = c('Carro'), width = "20%") %>%
+  formatStyle(columns = c('Promotores'), width = "12.5%") %>%
+  formatStyle(columns = c('Passivos'), width = "12.5%") %>%
+  formatStyle(columns = c('Detratores'), width = "12.5%") %>%
+  formatStyle(columns = c('Total'), width = "12.5%") %>%
+  formatStyle(columns = c('NPS'), width = "10%")
 
-d2 <- d1 %>% 
-  group_by(marca, cor) %>% 
-  summarise(quantidade = sum(quantidade)) %>% 
-  rename(carro = marca) %>%             # change columns
-  mutate(marca = "") %>%                # create blank column replacement
-  select(names(d1))                     # put columns back in order
-
-d3 <- rbind(d2, d1) %>% as.data.frame() # combine with original data
-
-treemap <- plot_ly(
-  data = d3, 
-  type = "treemap", 
-  labels = ~carro,
-  parents = ~marca, 
-  values = ~quantidade,
-  hovertemplate = "%{label}<br>%{value} carros",
-  branchvalues = "total",
-  marker = list(colors = ~cor)  # Define as cores das caixas do treemap
+# Criar o tabsetPanel com as guias para cada ano
+tabsetPanel(
+  tabPanel('Tabela NPS por Marca', NPS_marca),
+  tabPanel('Tabela NPS por Veículo', NPS_carro)
 )
 
+```
 
-# Gráfico de barras por marca
-# Chevrolet
-dados_chevrolet <- subset(dados_carro, marca == 'Chevrolet')
-dados_chevrolet <- dados_chevrolet[order(-dados_chevrolet$quantidade), ]
-y_max <- max(dados_chevrolet$quantidade) * 1.2 #definir uma altura por eixo y
+#### {.tabset .tabset-fade .tabset-pills}
 
-# Grafico de barras plotly
-graph_chevrolet <- plot_ly(
-  dados_chevrolet, 
-  x = ~reorder(factor(carro), -quantidade), 
-  y = ~quantidade, 
-  type = "bar", 
-  marker = list(color = color_chevrolet),
-  hovertemplate = "Carro: %{x}<br>Quantidade: %{y}",
-  texttemplate = "%{y}",
-  textposition = "outside",
-  textfont = list(color = "black")
-) %>%
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
+
+rosca_nps <- plot_ly(
+  data = dados_NPS,
+  labels = ~Class_NPS,
+  values = ~Valor,
+  type = "pie",
+  hole = 0.5, 
+  marker = list(colors = ~cores_NPS),  
+  textposition = "auto",
+  hoverinfo = "text+percent",
+  text = ~paste(Class_NPS),
+  textinfo = "percent"
+)
+
+# Layout do gráfico
+layout <- list(
+  title = "Resultado NPS Geral",
+  showlegend = TRUE,
+  legend = list(
+    x = 1,
+    y = 0.5
+  )
+)
+
+## Gráfico colunas empilhadas por marca
+graph_nps <- plot_ly(
+  data = dados_NPS_marca,
+  x = ~marca, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_NPS,
+  colors = c("Promotores" = color_promotores,
+             "Passivos" = color_passivos,
+             "Detratores" = color_detratores),
+  hovertemplate = ~paste0(Class_NPS, ": ", freq, "%")) %>%
   layout(
     title = list(
-      text = "Quantidade de veículos da marca Chevrolet",
-      y = 0.95  # Deslocamento do título para baixo
+      text = "NPS por Marca",
+      y = 0.95  
     ),
-    xaxis = list(title = "Carro", categoryorder = "array", categoryarray = dados_chevrolet$carro),
-    yaxis = list(title = "Quantidade", range = c(0, y_max))
+    xaxis = list(title = "Marca"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
+  )
+
+
+# Chevrolet
+graph_nps_chevrolet <- plot_ly(
+  data = subset(dados_NPS_carro, marca == 'Chevrolet'),
+  x = ~carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_NPS,
+  colors = c("Promotores" = color_promotores,
+             "Passivos" = color_passivos,
+             "Detratores" = color_detratores),
+  hovertemplate = ~paste0(Class_NPS, ": ", freq, "%")) %>%
+  layout(
+    title = list(
+      text = "NPS Veículos Chevrolet",
+      y = 0.95  
+    ),
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
   )
 
 # Fiat
-dados_fiat <- subset(dados_carro, marca == 'Fiat')
-dados_fiat <- dados_fiat[order(-dados_fiat$quantidade), ]
-y_max <- max(dados_fiat$quantidade) * 1.2 #definir uma altura por eixo y
-
-# Grafico de barras plotly
-graph_fiat <- plot_ly(
-  dados_fiat, 
-  x = ~reorder(factor(carro), -quantidade), 
-  y = ~quantidade, 
-  type = "bar", 
-  marker = list(color = color_fiat),
-  hovertemplate = "Carro: %{x}<br>Quantidade: %{y}",
-  texttemplate = "%{y}",
-  textposition = "outside",
-  textfont = list(color = "black")
-) %>%
+graph_nps_fiat <- plot_ly(
+  data = subset(dados_NPS_carro, marca == 'Fiat'),
+  x = ~carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_NPS,
+  colors = c("Promotores" = color_promotores,
+             "Passivos" = color_passivos,
+             "Detratores" = color_detratores),
+  hovertemplate = ~paste0(Class_NPS, ": ", freq, "%")) %>%
   layout(
     title = list(
-      text = "Quantidade de veículos da marca Fiat",
-      y = 0.95  # Deslocamento do título para baixo
+      text = "NPS Veículos Fiat",
+      y = 0.95  
     ),
-    xaxis = list(title = "Carro", categoryorder = "array", categoryarray = dados_fiat$carro),
-    yaxis = list(title = "Quantidade", range = c(0, y_max))
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
   )
 
 # Ford
-dados_ford <- subset(dados_carro, marca == 'Ford')
-dados_ford <- dados_ford[order(-dados_ford$quantidade), ]
-y_max <- max(dados_ford$quantidade) * 1.2 #definir uma altura por eixo y
-
-# Grafico de barras plotly
-graph_ford <- plot_ly(
-  dados_ford, 
-  x = ~reorder(factor(carro), -quantidade), 
-  y = ~quantidade, 
-  type = "bar", 
-  marker = list(color = color_ford),
-  hovertemplate = "Carro: %{x}<br>Quantidade: %{y}",
-  texttemplate = "%{y}",
-  textposition = "outside",
-  textfont = list(color = "black") 
-) %>%
+graph_nps_ford <- plot_ly(
+  data = subset(dados_NPS_carro, marca == 'Ford'),
+  x = ~carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_NPS,
+  colors = c("Promotores" = color_promotores,
+             "Passivos" = color_passivos,
+             "Detratores" = color_detratores),
+  hovertemplate = ~paste0(Class_NPS, ": ", freq, "%")) %>%
   layout(
     title = list(
-      text = "Quantidade de veículos da marca Ford",
-      y = 0.95  # Deslocamento do título para baixo
+      text = "NPS Veículos Ford",
+      y = 0.95  
     ),
-    xaxis = list(title = "Carro", categoryorder = "array", categoryarray = dados_ford$carro),
-    yaxis = list(title = "Quantidade", range = c(0, y_max))
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
   )
 
 # Honda
-dados_honda <- subset(dados_carro, marca == 'Honda')
-dados_honda <- dados_honda[order(-dados_honda$quantidade), ]
-y_max <- max(dados_honda$quantidade) * 1.2 #definir uma altura por eixo y
-
-# Grafico de barras plotly
-graph_honda <- plot_ly(
-  dados_honda, 
-  x = ~reorder(factor(carro), -quantidade), 
-  y = ~quantidade, 
-  type = "bar", 
-  marker = list(color = color_honda),
-  hovertemplate = "Carro: %{x}<br>Quantidade: %{y}",
-  texttemplate = "%{y}",
-  textposition = "outside",
-  textfont = list(color = "black")
-) %>%
+graph_nps_honda <- plot_ly(
+  data = subset(dados_NPS_carro, marca == 'Honda'),
+  x = ~carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_NPS,
+  colors = c("Promotores" = color_promotores,
+             "Passivos" = color_passivos,
+             "Detratores" = color_detratores),
+  hovertemplate = ~paste0(Class_NPS, ": ", freq, "%")) %>%
   layout(
     title = list(
-      text = "Quantidade de veículos da marca Honda",
-      y = 0.95  # Deslocamento do título para baixo
+      text = "NPS Veículos Honda",
+      y = 0.95  
     ),
-    xaxis = list(title = "Carro", categoryorder = "array", categoryarray = dados_honda$carro),
-    yaxis = list(title = "Quantidade", range = c(0, y_max))
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
   )
 
-# hyundai
-dados_hyundai <- subset(dados_carro, marca == 'Hyundai')
-dados_hyundai <- dados_hyundai[order(-dados_hyundai$quantidade), ]
-y_max <- max(dados_hyundai$quantidade) * 1.2 #definir uma altura por eixo y
-
-# Grafico de barras plotly
-graph_hyundai <- plot_ly(
-  dados_hyundai, 
-  x = ~reorder(factor(carro), -quantidade), 
-  y = ~quantidade, 
-  type = "bar", 
-  marker = list(color = color_hyundai),
-  hovertemplate = "Carro: %{x}<br>Quantidade: %{y}",
-  texttemplate = "%{y}",
-  textposition = "outside",
-  textfont = list(color = "black")
-) %>%
+# Hyundai
+graph_nps_hyundai <- plot_ly(
+  data = subset(dados_NPS_carro, marca == 'Hyundai'),
+  x = ~carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_NPS,
+  colors = c("Promotores" = color_promotores,
+             "Passivos" = color_passivos,
+             "Detratores" = color_detratores),
+  hovertemplate = ~paste0(Class_NPS, ": ", freq, "%")) %>%
   layout(
     title = list(
-      text = "Quantidade de veículos da marca Hyundai",
-      y = 0.95  # Deslocamento do título para baixo
+      text = "NPS Veículos Hyundai",
+      y = 0.95  
     ),
-    xaxis = list(title = "Carro", categoryorder = "array", categoryarray = dados_hyundai$carro),
-    yaxis = list(title = "Quantidade", range = c(0, y_max))
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
   )
 
 # JAC
-dados_jac <- subset(dados_carro, marca == 'JAC')
-dados_jac <- dados_jac[order(-dados_jac$quantidade), ]
-y_max <- max(dados_jac$quantidade) * 1.2 #definir uma altura por eixo y
-
-# Grafico de barras plotly
-graph_jac <- plot_ly(
-  dados_jac, 
-  x = ~reorder(factor(carro), -quantidade), 
-  y = ~quantidade, 
-  type = "bar", 
-  marker = list(color = color_jac),
-  hovertemplate = "Carro: %{x}<br>Quantidade: %{y}",
-  texttemplate = "%{y}",
-  textposition = "outside",
-  textfont = list(color = "black")
-) %>%
+graph_nps_jac <- plot_ly(
+  data = subset(dados_NPS_carro, marca == 'JAC'),
+  x = ~carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_NPS,
+  colors = c("Promotores" = color_promotores,
+             "Passivos" = color_passivos,
+             "Detratores" = color_detratores),
+  hovertemplate = ~paste0(Class_NPS, ": ", freq, "%")) %>%
   layout(
     title = list(
-      text = "Quantidade de veículos da marca JAC",
-      y = 0.95  # Deslocamento do título para baixo
+      text = "NPS Veículos JAC",
+      y = 0.95  
     ),
-    xaxis = list(title = "Carro", categoryorder = "array", categoryarray = dados_jac$carro),
-    yaxis = list(title = "Quantidade", range = c(0, y_max))
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
   )
 
-# Renault
-dados_renault <- subset(dados_carro, marca == 'Renault')
-dados_renault <- dados_renault[order(-dados_renault$quantidade), ]
-y_max <- max(dados_renault$quantidade) * 1.2 #definir uma altura por eixo y
-
-# Grafico de barras plotly
-graph_renault <- plot_ly(
-  dados_renault, 
-  x = ~reorder(factor(carro), -quantidade), 
-  y = ~quantidade, 
-  type = "bar", 
-  marker = list(color = color_renault),
-  hovertemplate = "Carro: %{x}<br>Quantidade: %{y}",
-  texttemplate = "%{y}",
-  textposition = "outside",
-  textfont = list(color = "black") 
-) %>%
+# Renaut
+graph_nps_renault <- plot_ly(
+  data = subset(dados_NPS_carro, marca == 'Renault'),
+  x = ~carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_NPS,
+  colors = c("Promotores" = color_promotores,
+             "Passivos" = color_passivos,
+             "Detratores" = color_detratores),
+  hovertemplate = ~paste0(Class_NPS, ": ", freq, "%")) %>%
   layout(
     title = list(
-      text = "Quantidade de veículos da marca Renault",
-      y = 0.95  # Deslocamento do título para baixo
+      text = "NPS Veículos Renault",
+      y = 0.95  
     ),
-    xaxis = list(title = "Carro", categoryorder = "array", categoryarray = dados_renault$carro),
-    yaxis = list(title = "Quantidade", range = c(0, y_max))
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
   )
 
 # Volkswagen
-dados_volkswagen <- subset(dados_carro, marca == 'Volkswagen')
-dados_volkswagen <- dados_volkswagen[order(-dados_volkswagen$quantidade), ]
-y_max <- max(dados_volkswagen$quantidade) * 1.2 #definir uma altura por eixo y
-
-# Grafico de barras plotly
-graph_volkswagen <- plot_ly(
-  x = ~reorder(factor(dados_volkswagen$carro), -dados_volkswagen$quantidade),
-  y = ~dados_volkswagen$quantidade,
-  type = "bar",
-  marker = list(color = color_volkswagen),
-  hovertemplate = "Carro: %{x}<br>Quantidade: %{y}",
-  texttemplate = "%{y}",
-  textposition = "outside",
-  textfont = list(color = "black")
-) %>%
+graph_nps_volkswagen <- plot_ly(
+  data = subset(dados_NPS_carro, marca == 'Volkswagen'),
+  x = ~carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_NPS,
+  colors = c("Promotores" = color_promotores,
+             "Passivos" = color_passivos,
+             "Detratores" = color_detratores),
+  hovertemplate = ~paste0(Class_NPS, ": ", freq, "%")) %>%
   layout(
     title = list(
-      text = "Quantidade de veículos da marca Volkswagen",
-      y = 0.95  # Deslocamento do título para baixo
+      text = "NPS Veículos Volkswagen",
+      y = 0.95  
     ),
-    xaxis = list(title = "Carro", categoryorder = "array", categoryarray = dados_volkswagen$carro),
-    yaxis = list(title = "Quantidade", range = c(0, y_max))
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
   )
-
 
 
 # Criar o tabsetPanel com as guias para cada ano
 tabsetPanel(
-  tabPanel('Veículos', treemap),
-  tabPanel('Chevrolet', graph_chevrolet),
-  tabPanel('Fiat', graph_fiat),
-  tabPanel('Ford', graph_ford),
-  tabPanel('Honda', graph_honda),
-  tabPanel('Hyundai', graph_hyundai),
-  tabPanel('JAC', graph_jac),
-  tabPanel('Renault', graph_renault),
-  tabPanel('Volkswagen', graph_volkswagen)
+  tabPanel('NPS Geral', rosca_nps),
+  tabPanel('NPS por Marca', graph_nps),
+  tabPanel('Chevrolet', graph_nps_chevrolet),
+  tabPanel('Fiat', graph_nps_fiat),
+  tabPanel('Ford', graph_nps_ford),
+  tabPanel('Honda', graph_nps_honda),
+  tabPanel('Hyundai', graph_nps_hyundai),
+  tabPanel('JAC', graph_nps_jac),
+  tabPanel('Renault', graph_nps_renault),
+  tabPanel('Volkswagen', graph_nps_volkswagen)
 )
 
 ```
@@ -340,453 +423,363 @@ tabsetPanel(
 
 ```{r, echo=FALSE}
 
-# Criação de ranking
-prop <- dados_carro
-prop$freq_marca <- prop$total_marca / sum(prop$total_marca)
-prop$freq_carro <- prop$quantidade / sum(prop$quantidade)
-
-prop_marca <- subset(prop[c("marca", "total_marca", "cor", "freq_marca")], total_marca != 0) %>%
-  arrange(desc(total_marca)) %>%
-  mutate(indice = row_number())
-
-melhores_marcas <- round((sum(prop_marca$freq[1:3]) * 100), 1)
-
-
-
 ```
 
+### CSAT
 
+Para fins de melhor visualização dos dados, optou-se pela transformação da escala numérica em uma escala de percepção. Diante disso, atribuísse os seguintes valores às categorias:
 
-### Desempenho de venda por Marca
-
-Após a análise geral das vendas, concentramos nossa atenção nas marcas para avaliar o desempenho individual de cada uma em relação ao total de vendas no período considerado. Descobrimos que as três marcas principais representam **`r melhores_marcas`%** do total de veículos vendidos.
-
-Agora, vamos explorar a proporção de vendas de cada uma dessas marcas e analisar o desempenho dos modelos de veículos oferecidos por cada uma delas.
+1. Muito Insatisfeito: [0-2)
+2. Insatisfeito: [2-4)
+3. Neutro: [4-6]
+4. Satisfeito: (6-8]
+5. Muito Satisfeito: (8-10]
 
 #### {.tabset .tabset-fade .tabset-pills}
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
 
-rosca_marca <- plot_ly(
-  data = dados_carro,
-  labels = ~marca,
-  values = ~total_marca,
+# Tabela NPS Marca
+CSAT_marca <- DT::datatable(
+  dados_CSAT_Geral2[,c('Marca',
+                     'Muito Satisfeito',
+                     'Satisfeito',
+                     'Neutro',
+                     'Insatisfeito',
+                     'Muito Insatisfeito',
+                     'Total')],  
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T)  %>%
+  formatStyle(columns = c("Marca"), width = "40%") %>%
+  formatStyle(columns = c('Muito Satisfeito'), width = "10%") %>%
+  formatStyle(columns = c('Satisfeito'), width = "10%") %>%
+  formatStyle(columns = c('Neutro'), width = "10%") %>%
+  formatStyle(columns = c('Insatisfeito'), width = "10%") %>%
+  formatStyle(columns = c('Muito Insatisfeito'), width = "10%") %>%
+  formatStyle(columns = c('Total'), width = "10%")
+
+# Tabela NPS Carro
+CSAT_carro <- DT::datatable(
+  dados_CSAT_Geral[,c('Marca',
+                     'Carro',
+                     'Muito Satisfeito',
+                     'Satisfeito',
+                     'Neutro',
+                     'Insatisfeito',
+                     'Muito Insatisfeito',
+                     'Total')],   
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T)  %>%
+  formatStyle(columns = c("Marca"), width = "20%") %>%
+  formatStyle(columns = c("Carro"), width = "20%") %>%
+  formatStyle(columns = c('Muito Satisfeito'), width = "10%") %>%
+  formatStyle(columns = c('Satisfeito'), width = "10%") %>%
+  formatStyle(columns = c('Neutro'), width = "10%") %>%
+  formatStyle(columns = c('Insatisfeito'), width = "10%") %>%
+  formatStyle(columns = c('Muito Insatisfeito'), width = "10%") %>%
+  formatStyle(columns = c('Total'), width = "10%")
+
+# Criar o tabsetPanel com as guias para cada ano
+tabsetPanel(
+  tabPanel('Tabela CSAT por Marca', CSAT_marca),
+  tabPanel('Tabela CSAT por Veículo', CSAT_carro)
+)
+
+```
+
+#### {.tabset .tabset-fade .tabset-pills}
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
+
+rosca_CSAT <- plot_ly(
+  data = dados_CSAT_marca,
+  labels = ~Class_CSAT,
+  values = ~Valor,
   type = "pie",
   hole = 0.5, 
-  marker = list(colors = ~cor),  
-  textposition = "none",
+  marker = list(colors = ~cores_CSAT),  
+  textposition = "auto",
   hoverinfo = "text+percent",
-  text = ~paste(marca, "<br>")
+  text = ~paste(Class_CSAT),
+  textinfo = "percent"
 )
+
 # Layout do gráfico
 layout <- list(
-  title = "Distribuição por Marca",
+  title = "Resultado CSAT Geral",
   showlegend = TRUE,
   legend = list(
     x = 1,
     y = 0.5
   )
 )
-# Combinar gráfico e layout
-rosca_marca <- layout(rosca_marca, layout)
+
+
+# Definir a ordem das categorias do CSAT
+csat_order <- c("Muito Insatisfeito", "Insatisfeito", "Neutro", "Satisfeito", "Muito Satisfeito")
+
+# Converter a coluna Class_CSAT para um fator com a ordem desejada
+dados_CSAT_marca$Class_CSAT <- factor(dados_CSAT_marca$Class_CSAT, levels = csat_order)
+dados_CSAT_carro$Class_CSAT <- factor(dados_CSAT_carro$Class_CSAT, levels = csat_order)
+
+## Gráfico colunas empilhadas por marca
+graph_CSAT <- plot_ly(
+  data = dados_CSAT_marca,
+  x = ~Marca, 
+  y = ~freq, 
+  type = 'bar',
+  #orientation = 'h',
+  color = ~Class_CSAT,
+  colors = c("Muito Satisfeito" = color_mtosatisfeito,
+             "Satisfeito" = color_satisfeito,
+             "Neutro" = color_neutro,
+             "Insatisfeito" = color_insatisfeito,
+             "Muito Insatisfeito" = color_mtoinsatisfeito),
+  hovertemplate = ~paste0(Class_CSAT, ": ", freq, "%")
+) %>%
+  layout(
+    title = list(
+      text = "CSAT por Marca",
+      y = 0.95  
+    ),
+    xaxis = list(title = "Marca"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
+  )
+
+
 
 # Chevrolet
-# fazer um cartão com quantidade total e percentual sobre o total *****************
-# Filtrar os dados da marca Chevrolet
-dados_chevrolet <- dados_carro %>%
-  filter(marca == "Chevrolet")
+csat_chevrolet <- subset(dados_CSAT_carro, Marca == "Chevrolet")
 
-dados_chevrolet <- dados_chevrolet %>%
-  mutate(freq = round((quantidade / sum(quantidade)) * 100, 1))
-
-# Adicionar a coluna com a diferença
-dados_chevrolet <- dados_chevrolet %>%
-  mutate(freq2 = 100 - dados_chevrolet$freq)
-
-# Ordenar os dados por quantidade em ordem decrescente
-dados_chevrolet <- dados_chevrolet %>%
-  arrange(desc(quantidade))
-dados_chevrolet$carro <- factor(dados_chevrolet$carro, levels = rev(dados_chevrolet$carro))
-dados_chevrolet <- data.frame(dados_chevrolet[c('carro', 'freq', 'freq2')])
-
-# Definindo cores
-cor_principal <- color_chevrolet
-cor_tonalidade_fraca <- '#ECAF80'
-
-# Gráfico
-graph2_chevrolet <- data.table::melt(dados_chevrolet, id.vars = 'carro') %>%
-  plot_ly(
-    x = ~value, 
-    y = ~carro, 
-    type = 'bar',
-    name = ~variable, 
-    color = ~variable,
-    colors = c(freq = cor_principal, freq2 = cor_tonalidade_fraca),
-    orientation = 'h',
-    hovertemplate = ~paste0("",
-                            ifelse(variable == "freq",
-                                   paste0(carro, ": ", value, "%"),
-                                   paste0(value, "%")))) %>%
-  layout(xaxis = list(title = 'Frequência'), 
-         barmode = 'stack',
-         showlegend = FALSE)
-
+graph_csat_chevrolet <- plot_ly(
+  data = csat_chevrolet,
+  x = ~Carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_CSAT,
+  colors = c("Muito Satisfeito" = color_mtosatisfeito,
+             "Satisfeito" = color_satisfeito,
+             "Neutro" = color_neutro,
+             "Insatisfeito" = color_insatisfeito,
+             "Muito Insatisfeito" = color_mtoinsatisfeito),
+  hovertemplate = ~paste0(Class_CSAT, ": ", freq, "%")) %>%
+  layout(
+    title = list(
+      text = "CSAT Veículos Chevrolet",
+      y = 0.95  
+    ),
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
+  )
 
 # Fiat
-# Filtrar os dados da marca Fiat
-dados_fiat <- dados_carro %>%
-  filter(marca == "Fiat")
+csat_fiat <- subset(dados_CSAT_carro, Marca == "Fiat")
 
-dados_fiat <- dados_fiat %>%
-  mutate(freq = round((quantidade / sum(quantidade)) * 100, 1))
-
-# Adicionar a coluna com a diferença
-dados_fiat <- dados_fiat %>%
-  mutate(freq2 = 100 - dados_fiat$freq)
-
-# Ordenar os dados por quantidade em ordem decrescente
-dados_fiat <- dados_fiat %>%
-  arrange(desc(quantidade))
-dados_fiat$carro <- factor(dados_fiat$carro, levels = rev(dados_fiat$carro))
-dados_fiat <- data.frame(dados_fiat[c('carro', 'freq', 'freq2')])
-
-# Definindo cores
-cor_principal <- color_fiat
-cor_tonalidade_fraca <- '#BAB7D9'
-
-# Gráfico
-graph2_fiat <- data.table::melt(dados_fiat, id.vars = 'carro') %>%
-  plot_ly(
-    x = ~value, 
-    y = ~carro, 
-    type = 'bar',
-    name = ~variable, 
-    color = ~variable,
-    colors = c(freq = cor_principal, freq2 = cor_tonalidade_fraca),
-    orientation = 'h',
-    hovertemplate = ~paste0("",
-                            ifelse(variable == "freq",
-                                   paste0(carro, ": ", value, "%"),
-                                   paste0(value, "%")))) %>%
-  layout(xaxis = list(title = 'Frequência'), 
-         barmode = 'stack',
-         showlegend = FALSE)
-
+graph_csat_fiat <- plot_ly(
+  data = csat_fiat,
+  x = ~Carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_CSAT,
+  colors = c("Muito Satisfeito" = color_mtosatisfeito,
+             "Satisfeito" = color_satisfeito,
+             "Neutro" = color_neutro,
+             "Insatisfeito" = color_insatisfeito,
+             "Muito Insatisfeito" = color_mtoinsatisfeito),
+  hovertemplate = ~paste0(Class_CSAT, ": ", freq, "%")) %>%
+  layout(
+    title = list(
+      text = "CSAT Veículos Fiat",
+      y = 0.95  
+    ),
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
+  )
 
 # Ford
-# Filtrar os dados da marca Ford
-dados_ford <- dados_carro %>%
-  filter(marca == "Ford")
+csat_ford <- subset(dados_CSAT_carro, Marca == "Ford")
 
-dados_ford <- dados_ford %>%
-  mutate(freq = round((quantidade / sum(quantidade)) * 100, 1))
-
-# Adicionar a coluna com a diferença
-dados_ford <- dados_ford %>%
-  mutate(freq2 = 100 - dados_ford$freq)
-
-# Ordenar os dados por quantidade em ordem decrescente
-dados_ford <- dados_ford %>%
-  arrange(desc(quantidade))
-dados_ford$carro <- factor(dados_chevrolet$carro, levels = rev(dados_ford$carro))
-dados_ford <- data.frame(dados_chevrolet[c('carro', 'freq', 'freq2')])
-
-# Definindo cores
-cor_principal <- color_ford
-cor_tonalidade_fraca <- '#F394C4'
-
-# Gráfico
-graph2_ford <- data.table::melt(dados_ford, id.vars = 'carro') %>%
-  plot_ly(
-    x = ~value, 
-    y = ~carro, 
-    type = 'bar',
-    name = ~variable, 
-    color = ~variable,
-    colors = c(freq = cor_principal, freq2 = cor_tonalidade_fraca),
-    orientation = 'h',
-    hovertemplate = ~paste0("",
-                            ifelse(variable == "freq",
-                                   paste0(carro, ": ", value, "%"),
-                                   paste0(value, "%")))) %>%
-  layout(xaxis = list(title = 'Frequência'), 
-         barmode = 'stack',
-         showlegend = FALSE)
-
+graph_csat_ford <- plot_ly(
+  data = csat_ford,
+  x = ~Carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_CSAT,
+  colors = c("Muito Satisfeito" = color_mtosatisfeito,
+             "Satisfeito" = color_satisfeito,
+             "Neutro" = color_neutro,
+             "Insatisfeito" = color_insatisfeito,
+             "Muito Insatisfeito" = color_mtoinsatisfeito),
+  hovertemplate = ~paste0(Class_CSAT, ": ", freq, "%")) %>%
+  layout(
+    title = list(
+      text = "CSAT Veículos Ford",
+      y = 0.95  
+    ),
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
+  )
 
 # Honda
-# Filtrar os dados da marca Honda
-dados_honda <- dados_carro %>%
-  filter(marca == "Honda")
+csat_honda <- subset(dados_CSAT_carro, Marca == "Honda")
 
-dados_honda <- dados_honda %>%
-  mutate(freq = round((quantidade / sum(quantidade)) * 100, 1))
-
-# Adicionar a coluna com a diferença
-dados_honda <- dados_honda %>%
-  mutate(freq2 = 100 - dados_honda$freq)
-
-# Ordenar os dados por quantidade em ordem decrescente
-dados_honda <- dados_honda %>%
-  arrange(desc(quantidade))
-dados_honda$carro <- factor(dados_honda$carro, levels = rev(dados_honda$carro))
-dados_honda <- data.frame(dados_honda[c('carro', 'freq', 'freq2')])
-
-# Definindo cores
-cor_principal <- color_honda
-cor_tonalidade_fraca <- '#D2BA8E'
-
-# Gráfico
-graph2_honda <- data.table::melt(dados_honda, id.vars = 'carro') %>%
-  plot_ly(
-    x = ~value, 
-    y = ~carro, 
-    type = 'bar',
-    name = ~variable, 
-    color = ~variable,
-    colors = c(freq = cor_principal, freq2 = cor_tonalidade_fraca),
-    orientation = 'h',
-    hovertemplate = ~paste0("",
-                            ifelse(variable == "freq",
-                                   paste0(carro, ": ", value, "%"),
-                                   paste0(value, "%")))) %>%
-  layout(xaxis = list(title = 'Frequência'), 
-         barmode = 'stack',
-         showlegend = FALSE)
-
+graph_csat_honda <- plot_ly(
+  data = csat_honda,
+  x = ~Carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_CSAT,
+  colors = c("Muito Satisfeito" = color_mtosatisfeito,
+             "Satisfeito" = color_satisfeito,
+             "Neutro" = color_neutro,
+             "Insatisfeito" = color_insatisfeito,
+             "Muito Insatisfeito" = color_mtoinsatisfeito),
+  hovertemplate = ~paste0(Class_CSAT, ": ", freq, "%")) %>%
+  layout(
+    title = list(
+      text = "CSAT Veículos Honda",
+      y = 0.95  
+    ),
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
+  )
 
 # Hyundai
-# Filtrar os dados da marca Hyundai
-dados_hyundai <- dados_carro %>%
-  filter(marca == "Hyundai")
+csat_hyundai <- subset(dados_CSAT_carro, Marca == "Hyundai")
 
-dados_hyundai <- dados_hyundai %>%
-  mutate(freq = round((quantidade / sum(quantidade)) * 100, 1))
-
-# Adicionar a coluna com a diferença
-dados_hyundai <- dados_hyundai %>%
-  mutate(freq2 = 100 - dados_hyundai$freq)
-
-# Ordenar os dados por quantidade em ordem decrescente
-dados_hyundai <- dados_hyundai %>%
-  arrange(desc(quantidade))
-dados_hyundai$carro <- factor(dados_hyundai$carro, levels = rev(dados_hyundai$carro))
-dados_hyundai <- data.frame(dados_hyundai[c('carro', 'freq', 'freq2')])
-
-# Definindo cores
-cor_principal <- color_hyundai
-cor_tonalidade_fraca <- '#B2B2B2'
-
-# Gráfico
-graph2_hyundai <- data.table::melt(dados_hyundai, id.vars = 'carro') %>%
-  plot_ly(
-    x = ~value, 
-    y = ~carro, 
-    type = 'bar',
-    name = ~variable, 
-    color = ~variable,
-    colors = c(freq = cor_principal, freq2 = cor_tonalidade_fraca),
-    orientation = 'h',
-    hovertemplate = ~paste0("",
-                            ifelse(variable == "freq",
-                                   paste0(carro, ": ", value, "%"),
-                                   paste0(value, "%")))) %>%
-  layout(xaxis = list(title = 'Frequência'), 
-         barmode = 'stack',
-         showlegend = FALSE)
-
+graph_csat_hyundai <- plot_ly(
+  data = csat_hyundai,
+  x = ~Carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_CSAT,
+  colors = c("Muito Satisfeito" = color_mtosatisfeito,
+             "Satisfeito" = color_satisfeito,
+             "Neutro" = color_neutro,
+             "Insatisfeito" = color_insatisfeito,
+             "Muito Insatisfeito" = color_mtoinsatisfeito),
+  hovertemplate = ~paste0(Class_CSAT, ": ", freq, "%")) %>%
+  layout(
+    title = list(
+      text = "CSAT Veículos Hyundai",
+      y = 0.95  
+    ),
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
+  )
 
 # JAC
-# Filtrar os dados da marca JAC
-dados_jac <- dados_carro %>%
-  filter(marca == "JAC")
+csat_jac <- subset(dados_CSAT_carro, Marca == "JAC")
 
-dados_jac <- dados_jac %>%
-  mutate(freq = round((quantidade / sum(quantidade)) * 100, 1))
+graph_csat_jac <- plot_ly(
+  data = csat_jac,
+  x = ~Carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_CSAT,
+  colors = c("Muito Satisfeito" = color_mtosatisfeito,
+             "Satisfeito" = color_satisfeito,
+             "Neutro" = color_neutro,
+             "Insatisfeito" = color_insatisfeito,
+             "Muito Insatisfeito" = color_mtoinsatisfeito),
+  hovertemplate = ~paste0(Class_CSAT, ": ", freq, "%")) %>%
+  layout(
+    title = list(
+      text = "CSAT Veículos JAC"),
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência"),
+    barmode = "stack",
+    showlegend = TRUE
+  )
 
-# Adicionar a coluna com a diferença
-dados_jac <- dados_jac %>%
-  mutate(freq2 = 100 - dados_jac$freq)
+# Renaut
+csat_renault <- subset(dados_CSAT_carro, Marca == "Renault")
 
-# Ordenar os dados por quantidade em ordem decrescente
-dados_jac <- dados_jac %>%
-  arrange(desc(quantidade))
-dados_jac$carro <- factor(dados_jac$carro, levels = rev(dados_jac$carro))
-dados_jac <- data.frame(dados_jac[c('carro', 'freq', 'freq2')])
-
-# Definindo cores
-cor_principal <- color_jac
-cor_tonalidade_fraca <- '#F2D580'
-
-# Gráfico
-graph2_jac <- data.table::melt(dados_jac, id.vars = 'carro') %>%
-  plot_ly(
-    x = ~value, 
-    y = ~carro, 
-    type = 'bar',
-    name = ~variable, 
-    color = ~variable,
-    colors = c(freq = cor_principal, freq2 = cor_tonalidade_fraca),
-    orientation = 'h',
-    hovertemplate = ~paste0("",
-                            ifelse(variable == "freq",
-                                   paste0(carro, ": ", value, "%"),
-                                   paste0(value, "%")))) %>%
-  layout(xaxis = list(title = 'Frequência'), 
-         barmode = 'stack',
-         showlegend = FALSE)
-
-
-# Renault
-# Filtrar os dados da marca Renault
-dados_renault <- dados_carro %>%
-  filter(marca == "Renault")
-
-dados_renault <- dados_renault %>%
-  mutate(freq = round((quantidade / sum(quantidade)) * 100, 1))
-
-# Adicionar a coluna com a diferença
-dados_renault <- dados_renault %>%
-  mutate(freq2 = 100 - dados_renault$freq)
-
-# Ordenar os dados por quantidade em ordem decrescente
-dados_renault <- dados_renault %>%
-  arrange(desc(quantidade))
-dados_renault$carro <- factor(dados_renault$carro, levels = rev(dados_renault$carro))
-dados_renault <- data.frame(dados_renault[c('carro', 'freq', 'freq2')])
-
-# Definindo cores
-cor_principal <- color_renault
-cor_tonalidade_fraca <- '#B2D28E'
-
-# Gráfico
-graph2_renault <- data.table::melt(dados_renault, id.vars = 'carro') %>%
-  plot_ly(
-    x = ~value, 
-    y = ~carro, 
-    type = 'bar',
-    name = ~variable, 
-    color = ~variable,
-    colors = c(freq = cor_principal, freq2 = cor_tonalidade_fraca),
-    orientation = 'h',
-    hovertemplate = ~paste0("",
-                            ifelse(variable == "freq",
-                                   paste0(carro, ": ", value, "%"),
-                                   paste0(value, "%")))) %>%
-  layout(xaxis = list(title = 'Frequência'), 
-         barmode = 'stack',
-         showlegend = FALSE)
-
+graph_csat_renault <- plot_ly(
+  data = csat_renault,
+  x = ~Carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_CSAT,
+  colors = c("Muito Satisfeito" = color_mtosatisfeito,
+             "Satisfeito" = color_satisfeito,
+             "Neutro" = color_neutro,
+             "Insatisfeito" = color_insatisfeito,
+             "Muito Insatisfeito" = color_mtoinsatisfeito),
+  hovertemplate = ~paste0(Class_CSAT, ": ", freq, "%")) %>%
+  layout(
+    title = list(
+      text = "CSAT Veículos Renault",
+      y = 0.95  
+    ),
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
+  )
 
 # Volkswagen
-# Filtrar os dados da marca Chevrolet
-dados_volkswagen <- dados_carro %>%
-  filter(marca == "Volkswagen")
+csat_volkswagen <- subset(dados_CSAT_carro, Marca == "Volkswagen")
 
-dados_volkswagen <- dados_volkswagen %>%
-  mutate(freq = round((quantidade / sum(quantidade)) * 100, 1))
-
-# Adicionar a coluna com a diferença
-dados_volkswagen <- dados_volkswagen %>%
-  mutate(freq2 = 100 - dados_volkswagen$freq)
-
-# Ordenar os dados por quantidade em ordem decrescente
-dados_volkswagen <- dados_volkswagen %>%
-  arrange(desc(quantidade))
-dados_volkswagen$carro <- factor(dados_volkswagen$carro, levels = rev(dados_volkswagen$carro))
-dados_volkswagen <- data.frame(dados_volkswagen[c('carro', 'freq', 'freq2')])
-
-# Definindo cores
-cor_principal <- color_volkswagen
-cor_tonalidade_fraca <- '#8DCEBB'
-
-# Gráfico
-graph2_volkswagen <- data.table::melt(dados_volkswagen, id.vars = 'carro') %>%
-  plot_ly(
-    x = ~value, 
-    y = ~carro, 
-    type = 'bar',
-    name = ~variable, 
-    color = ~variable,
-    colors = c(freq = cor_principal, freq2 = cor_tonalidade_fraca),
-    orientation = 'h',
-    hovertemplate = ~paste0("",
-                            ifelse(variable == "freq",
-                                   paste0(carro, ": ", value, "%"),
-                                   paste0(value, "%")))) %>%
-  layout(xaxis = list(title = 'Frequência'), 
-         barmode = 'stack',
-         showlegend = FALSE)
+graph_csat_volkswagen <- plot_ly(
+  data = csat_volkswagen,
+  x = ~Carro, 
+  y = ~freq, 
+  type = 'bar',
+  #name = ~Class_NPS, 
+  color = ~Class_CSAT,
+  colors = c("Muito Satisfeito" = color_mtosatisfeito,
+             "Satisfeito" = color_satisfeito,
+             "Neutro" = color_neutro,
+             "Insatisfeito" = color_insatisfeito,
+             "Muito Insatisfeito" = color_mtoinsatisfeito),
+  hovertemplate = ~paste0(Class_CSAT, ": ", freq, "%")) %>%
+  layout(
+    title = list(
+      text = "CSAT Veículos Volkswagen",
+      y = 0.95  
+    ),
+    xaxis = list(title = "Veículo"),
+    yaxis = list(title = "Frequência", range = c(0, 110)),
+    barmode = "stack",
+    showlegend = TRUE
+  )
 
 # Criar o tabsetPanel com as guias para cada ano
 tabsetPanel(
-  tabPanel('Marcas', rosca_marca),
-  tabPanel('Chevrolet', graph2_chevrolet),
-  tabPanel('Fiat', graph2_fiat),
-  tabPanel('Ford', graph2_ford),
-  tabPanel('Honda', graph2_honda),
-  tabPanel('Hyundai', graph2_hyundai),
-  tabPanel('JAC', graph2_jac),
-  tabPanel('Renault', graph2_renault),
-  tabPanel('Volkswagen', graph2_volkswagen)
+  tabPanel('CSAT Geral', rosca_CSAT),
+  tabPanel('CSAT por Marca', graph_CSAT),
+  tabPanel('Chevrolet', graph_csat_chevrolet),
+  tabPanel('Fiat', graph_csat_fiat),
+  tabPanel('Ford', graph_csat_ford),
+  tabPanel('Honda', graph_csat_honda),
+  tabPanel('Hyundai', graph_csat_hyundai),
+  tabPanel('JAC', graph_csat_jac),
+  tabPanel('Renault', graph_csat_renault),
+  tabPanel('Volkswagen', graph_csat_volkswagen)
 )
 
 ```
-
----
-
-### Titulo
-
-texto texto texto texto texto texto texto texto texto texto texto 
-
-
-#### {.tabset .tabset-fade .tabset-pills}
-
-```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
-
-
-# Criação do gráfico de barras
-grafico <- plot_ly(
-  data = dados_carro,
-  x = ~marca,
-  y = ~quantidade,
-  type = 'bar'
-)
-
-# Exibir o gráfico
-grafico
-
-
-
-````
-
----
-
-### Titulo
-
-texto texto texto texto texto texto texto texto texto texto texto 
-
-
-#### {.tabset .tabset-fade .tabset-pills}
-
-```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
-
-
-# Criação do gráfico de barras
-grafico <- plot_ly(
-  data = dados_carro,
-  x = ~carro,
-  y = ~quantidade,
-  type = 'bar'
-)
-
-# Exibir o gráfico
-grafico
-
-
-
-````
-
-
-
-------------------------------------------------------------------------

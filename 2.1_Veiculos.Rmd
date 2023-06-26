@@ -59,9 +59,6 @@ A seguir, exploraremos os detalhes desses veículos vendidos, para conhecer as m
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
 
-library(plotly)
-library(dplyr)
-
 # summarize data frame to get parent container totals
 d1 <- dados_carro[, c("marca", "carro", "quantidade", "cor")]
 
@@ -455,8 +452,8 @@ dados_ford <- dados_ford %>%
 # Ordenar os dados por quantidade em ordem decrescente
 dados_ford <- dados_ford %>%
   arrange(desc(quantidade))
-dados_ford$carro <- factor(dados_chevrolet$carro, levels = rev(dados_ford$carro))
-dados_ford <- data.frame(dados_chevrolet[c('carro', 'freq', 'freq2')])
+dados_ford$carro <- factor(dados_ford$carro, levels = rev(dados_ford$carro))
+dados_ford <- data.frame(dados_ford[c('carro', 'freq', 'freq2')])
 
 # Definindo cores
 cor_principal <- color_ford

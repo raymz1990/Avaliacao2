@@ -30,30 +30,29 @@ marca <- function(carro) {
                    "Voyage", 
                    "Saveiro",
                    "Jetta",
-                   "Crossfox", 
+                   "Crossfox",
+                   "Fox",
                    "Polo")) {
     return("Volkswagen")
-  } else if (carro %in% c("Fox", 
-                          "Onix", 
+  } else if (carro %in% c("Onix", 
                           "Celta", 
                           "Montana", 
-                          "Agile", 
+                          "Agile",
+                          "Cruze",
                           "S10")) {
     return("Chevrolet")
   } else if (carro %in% c("Punto", 
                           "Strada", 
                           "Uno", 
-                          "Bravo", 
-                          "Siena",
-                          "Cruze",
-                          "Agile")) {
+                          "Bravo",
+                          "Idea",
+                          "Palio",
+                          "Siena")) {
     return("Fiat")
   } else if (carro %in% c("KA", 
                           "Ecosport", 
                           "Focus", 
-                          "Ranger",
-                          "Idea",
-                          "Palio")) {
+                          "Ranger")) {
     return("Ford")
   } else if (carro %in% c("Duster", 
                           "Fluence", 

@@ -30,8 +30,8 @@ https://raw.githubusercontent.com/andersonara/datasets/master/aval_carros_nota.t
 
 
 ##### Alunos: 
-* Alan Ruiz
-* Diana Yuri
-* Raymundo Eduardo
+* Alan
+* Diana
+* Raymundo
 
 

@@ -25,6 +25,10 @@ navbar:
           icon: fa-arrow-right
           href: 2.2_Pesquisa.html
 
+        - text: "Análise Estatística"
+          icon: fa-arrow-right
+          href: 2.3_Estatistica.html
+
         - text: "---------" 
 
       

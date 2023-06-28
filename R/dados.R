@@ -90,7 +90,7 @@ dados2 <- dados %>%
   pivot_wider(names_from = item, values_from = nota) %>%
   mutate(indice = row_number())
 
-# criando 3ª tabela:
+
 # incluindo classificação NPS
 dados2 <- dados2 %>%
   mutate(Class_NPS = case_when(
@@ -98,6 +98,8 @@ dados2 <- dados2 %>%
     Recomendação <= 8 ~ "Passivos",
     TRUE ~ "Promotores"
   ))
+
+# criando 3ª tabela:
 dados3 <- dados2 %>%
   pivot_longer(cols = c(
     Estilo,
@@ -332,6 +334,72 @@ dados_CSAT_Geral2 <- dados_CSAT_marca %>%
     `Muito Satisfeito` = replace(`Muito Satisfeito`, is.na(`Muito Satisfeito`), 0),
     Total = `Muito Insatisfeito` + Insatisfeito + Neutro + Satisfeito + `Muito Satisfeito`
   )
+
+
+########### ESTATISTICA ######
+# Criar o dataframe para o heatmap NPS
+dados_heatmap <- dados2 %>%
+  select(marca, Recomendação) %>%
+  group_by(marca, Recomendação) %>%
+  summarise(valor = n(), .groups = 'drop') %>%
+  arrange(marca, Recomendação)
+dados_heatmap[is.na(dados_heatmap)] <- 0
+colnames(dados_heatmap) <- c("Marca", "Recomendação", "Valor")
+
+media <- round(mean(dados2$Recomendação),1)
+recomendacao_10 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 10]) / sum(dados_heatmap$Valor),3) * 100
+recomendacao_9 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 9]) / sum(dados_heatmap$Valor),3) * 100
+recomendacao_8 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 8]) / sum(dados_heatmap$Valor),3) * 100
+recomendacao_7 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 7]) / sum(dados_heatmap$Valor),3) * 100
+recomendacao_6 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 6]) / sum(dados_heatmap$Valor),3) * 100
+recomendacao_5 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 5]) / sum(dados_heatmap$Valor),3) * 100
+recomendacao_4 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 4]) / sum(dados_heatmap$Valor),3) * 100
+recomendacao_3 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 3]) / sum(dados_heatmap$Valor),3) * 100
+recomendacao_2 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 2]) / sum(dados_heatmap$Valor),3) * 100
+recomendacao_1 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 1]) / sum(dados_heatmap$Valor),3) * 100
+recomendacao_0 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 0])/ sum(dados_heatmap$Valor),3) * 100
+
+# Criar o dataframe para o heatmap CSAT
+dados_heatmap2 <- dados_CSAT %>%
+  select(Marca, Media) 
+dados_heatmap2$Nota <- round(dados_heatmap2$Media)
+dados_heatmap2 <- dados_heatmap2%>%
+  select(Marca, Nota) %>%
+  group_by(Marca, Nota) %>%
+  summarise(valor = n(), .groups = 'drop') 
+colnames(dados_heatmap2) <- c("Marca", "Média CSAT", "Valor")
+
+
+
+#dados_heatmap3 <- dados3 %>%
+#  select(marca, carro, CSAT, `Valor CSAT`)
+#colnames(dados_heatmap3) <- c("Marca", "Carro", "CSAT", "Nota")
+#dados_heatmap3 <- dados_heatmap3 %>%
+#  count(Nota, name = "valor")
+
+
+#  group_by(Nota) %>%
+#  
+#  summarise(valor = n(), .groups = 'drop')
+#  arrange(marca, carro, CSAT, `Valor CSAT`)
+#colnames(dados_heatmap2) <- c("Marca", "Média CSAT", "Valor")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

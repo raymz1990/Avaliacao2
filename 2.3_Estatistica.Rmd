@@ -1,0 +1,587 @@
+---
+title: "Análise Estatística"
+output:
+  html_document:                    
+    #toc: true                       
+    #toc_depth: 3                    
+    #toc_float: true                     
+    #  collapsed: true
+    #  smooth_scroll: true
+    #number_sections: true           
+    #theme: flatly
+    #spacelab
+    #default,cerulean,journal,flatly,readable,spacelab,
+    #united,cosmo,lumen,paper,sandstone,simplex,yeti
+    
+    highlight: espresso
+    #default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, and textmate
+    #css: _custom.css               
+    fig_width: 7                    
+    fig_height: 6                   
+    fig_caption: true               
+    fig_align: 'center'
+    #code_folding: hide              
+#    keep_md: true                   
+---
+
+<style>
+  body {
+    text-align: justify;
+  }
+</style>
+
+```{r setup, include=FALSE}
+# Configurações do knitr
+knitr::opts_chunk$set(echo = TRUE, cache = FALSE)
+source("./R/pacotes.R")
+source("./R/dados.R")
+```
+
+---
+
+```{r, echo=FALSE}
+
+
+```
+
+
+### 
+
+De forma geral, a empresa é bem avaliada pelos clientes. Conforme a coleta de dados realizada, em uma escala de **0** a **10**, a companhia teve uma média de **`r media`** na Recomendação, sendo que **`r recomendacao_10`%** das notas avaliada foram 10. Desta forma, é possível observar no "mapa do calor abaixo", uma maior concentração no topo do gráfico (especialmente, com notas **10**, que corresponde **`r recomendacao_10`%** do total, 9 e 8) e uma
+
+
+
+
+#### {.tabset .tabset-fade .tabset-pills}
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
+
+# Mapa do Calor NPS
+graph_heatmap <- plot_ly(
+  data = dados_heatmap, 
+  x = ~Marca, 
+  y = ~Recomendação,
+  z = ~Valor,
+  type = "heatmap",
+  colorscale = "Cividis",
+  text = ~paste(" Marca: ", Marca, "<br>", "Nota: ", Recomendação, "<br>", "Quantidade: ", Valor),
+  hoverinfo = "text") 
+
+# Mapa do Calor CSAT
+graph_heatmap2 <- plot_ly(
+  data = dados_heatmap2, 
+  x = ~Marca, 
+  y = ~`Média CSAT`,
+  z = ~Valor,
+  type = "heatmap",
+  colorscale = "Cividis",
+  text = ~paste(" Marca: ", Marca, "<br>", "Nota Média: ", `Média CSAT`, "<br>", "Quantidade: ", Valor),
+  hoverinfo = "text") 
+
+
+
+
+
+# Criar o tabsetPanel com as guias para cada ano
+tabsetPanel(
+  tabPanel('Dispersão Notas NPS', graph_heatmap),
+  tabPanel('Dispersão Notas CSAT', graph_heatmap2)
+)
+
+
+```
+
+---
+
+### CSAT
+
+
+
+#### {.tabset .tabset-fade .tabset-pills}
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
+
+
+# Boxplot Estilo
+dados_estilo <- dados2 %>%
+  select(marca, carro, Estilo) %>%
+  arrange(marca, carro, Estilo)
+colnames(dados_estilo) <- c("Marca", "Carro", "Estilo")
+dados_estilo$Marca <- factor(dados_estilo$Marca, levels = unique(dados_estilo$Marca))
+dados_estilo$Carro <- factor(dados_estilo$Carro, levels = unique(dados_estilo$Carro))
+
+box_estilo <- plot_ly(
+  data = dados_estilo, 
+  x = ~Carro, 
+  y = ~Estilo, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Estilo",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Acabamento
+dados_acabamento <- dados2 %>%
+  select(marca, carro, Acabamento) %>%
+  arrange(marca, carro, Acabamento)
+colnames(dados_acabamento) <- c("Marca", "Carro", "Acabamento")
+dados_acabamento$Marca <- factor(dados_acabamento$Marca, levels = unique(dados_acabamento$Marca))
+dados_acabamento$Carro <- factor(dados_acabamento$Carro, levels = unique(dados_acabamento$Carro))
+
+box_acabamento <- plot_ly(
+  data = dados_acabamento, 
+  x = ~Carro, 
+  y = ~Acabamento, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Acabamento",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Posição de Dirigir
+dados_posicao <- dados2 %>%
+  select(marca, carro, `Posição de dirigir`) %>%
+  arrange(marca, carro, `Posição de dirigir`)
+colnames(dados_posicao) <- c("Marca", "Carro", "Posição de Dirigir")
+dados_posicao$Marca <- factor(dados_posicao$Marca, levels = unique(dados_posicao$Marca))
+dados_posicao$Carro <- factor(dados_posicao$Carro, levels = unique(dados_posicao$Carro))
+
+box_posicao <- plot_ly(
+  data = dados_posicao, 
+  x = ~Carro, 
+  y = ~`Posição de Dirigir`, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Posição de Dirigir",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Instrumentos
+dados_instrumentos <- dados2 %>%
+  select(marca, carro, Instrumentos) %>%
+  arrange(marca, carro, Instrumentos)
+colnames(dados_instrumentos) <- c("Marca", "Carro", "Instrumentos")
+dados_instrumentos$Marca <- factor(dados_instrumentos$Marca, levels = unique(dados_instrumentos$Marca))
+dados_instrumentos$Carro <- factor(dados_instrumentos$Carro, levels = unique(dados_instrumentos$Carro))
+
+box_instrumentos <- plot_ly(
+  data = dados_instrumentos, 
+  x = ~Carro, 
+  y = ~Instrumentos, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Instrumentos",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Interior
+dados_interior <- dados2 %>%
+  select(marca, carro, Interior) %>%
+  arrange(marca, carro, Interior)
+colnames(dados_interior) <- c("Marca", "Carro", "Interior")
+dados_interior$Marca <- factor(dados_interior$Marca, levels = unique(dados_interior$Marca))
+dados_interior$Carro <- factor(dados_interior$Carro, levels = unique(dados_interior$Carro))
+
+box_interior <- plot_ly(
+  data = dados_interior, 
+  x = ~Carro, 
+  y = ~Interior, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Interior",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Porta-Malas
+dados_porta <- dados2 %>%
+  select(marca, carro, `Porta-malas`) %>%
+  arrange(marca, carro, `Porta-malas`)
+colnames(dados_porta) <- c("Marca", "Carro", "Porta-Malas")
+dados_porta$Marca <- factor(dados_porta$Marca, levels = unique(dados_porta$Marca))
+dados_porta$Carro <- factor(dados_porta$Carro, levels = unique(dados_porta$Carro))
+
+box_porta <- plot_ly(
+  data = dados_porta, 
+  x = ~Carro, 
+  y = ~`Porta-Malas`, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Porta-Malas",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Desempenho
+dados_desempenho <- dados2 %>%
+  select(marca, carro, Desempenho) %>%
+  arrange(marca, carro, Desempenho)
+colnames(dados_desempenho) <- c("Marca", "Carro", "Desempenho")
+dados_desempenho$Marca <- factor(dados_desempenho$Marca, levels = unique(dados_desempenho$Marca))
+dados_desempenho$Carro <- factor(dados_desempenho$Carro, levels = unique(dados_desempenho$Carro))
+
+box_desempenho <- plot_ly(
+  data = dados_desempenho, 
+  x = ~Carro, 
+  y = ~Desempenho, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Desempenho",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Motor
+dados_motor <- dados2 %>%
+  select(marca, carro, Motor) %>%
+  arrange(marca, carro, Motor)
+colnames(dados_motor) <- c("Marca", "Carro", "Motor")
+dados_motor$Marca <- factor(dados_motor$Marca, levels = unique(dados_motor$Marca))
+dados_motor$Carro <- factor(dados_motor$Carro, levels = unique(dados_motor$Carro))
+
+box_motor <- plot_ly(
+  data = dados_motor, 
+  x = ~Carro, 
+  y = ~Motor, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Motor",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Câmbio
+dados_cambio <- dados2 %>%
+  select(marca, carro, Câmbio) %>%
+  arrange(marca, carro, Câmbio)
+colnames(dados_cambio) <- c("Marca", "Carro", "Câmbio")
+dados_cambio$Marca <- factor(dados_cambio$Marca, levels = unique(dados_cambio$Marca))
+dados_cambio$Carro <- factor(dados_cambio$Carro, levels = unique(dados_cambio$Carro))
+
+box_cambio <- plot_ly(
+  data = dados_cambio, 
+  x = ~Carro, 
+  y = ~Câmbio, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Câmbio",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Freios
+dados_freios <- dados2 %>%
+  select(marca, carro, Freios) %>%
+  arrange(marca, carro, Freios)
+colnames(dados_freios) <- c("Marca", "Carro", "Freios")
+dados_freios$Marca <- factor(dados_freios$Marca, levels = unique(dados_freios$Marca))
+dados_freios$Carro <- factor(dados_freios$Carro, levels = unique(dados_freios$Carro))
+
+box_freios <- plot_ly(
+  data = dados_freios, 
+  x = ~Carro, 
+  y = ~Freios, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Freios",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Suspensão
+dados_suspensao <- dados2 %>%
+  select(marca, carro, Suspensão) %>%
+  arrange(marca, carro, Suspensão)
+colnames(dados_suspensao) <- c("Marca", "Carro", "Suspensão")
+dados_suspensao$Marca <- factor(dados_suspensao$Marca, levels = unique(dados_suspensao$Marca))
+dados_suspensao$Carro <- factor(dados_suspensao$Carro, levels = unique(dados_suspensao$Carro))
+
+box_suspensao <- plot_ly(
+  data = dados_suspensao, 
+  x = ~Carro, 
+  y = ~Suspensão, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Suspensão",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Consumo
+dados_consumo <- dados2 %>%
+  select(marca, carro, Consumo) %>%
+  arrange(marca, carro, Consumo)
+colnames(dados_consumo) <- c("Marca", "Carro", "Consumo")
+dados_consumo$Marca <- factor(dados_consumo$Marca, levels = unique(dados_consumo$Marca))
+dados_consumo$Carro <- factor(dados_consumo$Carro, levels = unique(dados_consumo$Carro))
+
+box_consumo <- plot_ly(
+  data = dados_consumo, 
+  x = ~Carro, 
+  y = ~Consumo, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Consumo",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Estabilidade
+dados_estabilidade <- dados2 %>%
+  select(marca, carro, Estabilidade) %>%
+  arrange(marca, carro, Estabilidade)
+colnames(dados_estabilidade) <- c("Marca", "Carro", "Estabilidade")
+dados_estabilidade$Marca <- factor(dados_estabilidade$Marca, levels = unique(dados_estabilidade$Marca))
+dados_estabilidade$Carro <- factor(dados_estabilidade$Carro, levels = unique(dados_estabilidade$Carro))
+
+box_estabilidade <- plot_ly(
+  data = dados_estabilidade, 
+  x = ~Carro, 
+  y = ~Estabilidade, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Estabilidade",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+# Boxplot Custo-Benefício
+dados_custo <- dados2 %>%
+  select(marca, carro, `Custo-Benefício `) %>%
+  arrange(marca, carro, `Custo-Benefício `)
+colnames(dados_custo) <- c("Marca", "Carro", "Custo-Benefício")
+dados_custo$Marca <- factor(dados_custo$Marca, levels = unique(dados_custo$Marca))
+dados_custo$Carro <- factor(dados_custo$Carro, levels = unique(dados_custo$Carro))
+
+box_custo <- plot_ly(
+  data = dados_custo, 
+  x = ~Carro, 
+  y = ~`Custo-Benefício`, 
+  type = "box",
+  color = ~Marca,
+  colors = c("Chevrolet" = color_chevrolet,
+             "Fiat" = color_fiat,
+             "Ford" = color_ford,
+             "Honda" = color_honda,
+             "Hyundai" = color_hyundai,
+             "JAC" = color_jac,
+             "Renault" = color_renault,
+             "Volkswagen" = color_volkswagen)
+) %>% 
+  layout(
+    title = list(
+      text = "Custo-Benefício",
+      y = 0.97),
+    xaxis = list(title = "Carro"),
+    yaxis = list(title = "Nota"),
+    showlegend = TRUE,
+    legend = list(title = "Marca")
+)
+
+
+
+# Criar o tabsetPanel com as guias para cada ano
+tabsetPanel(
+  tabPanel('Estilo', box_estilo),
+  tabPanel('Acabamento', box_acabamento),
+  tabPanel('Posição de Dirigir', box_posicao),
+  tabPanel('Instrumentos', box_instrumentos),
+  tabPanel('Interior', box_interior),
+  tabPanel('Porta', box_porta),
+  tabPanel('Desempenho', box_desempenho),
+  tabPanel('Motor', box_motor),
+  tabPanel('Câmbio', box_cambio),
+  tabPanel('Freios', box_freios),
+  tabPanel('Suspensão', box_suspensao),
+  tabPanel('Consumo', box_consumo),
+  tabPanel('Estabilidade', box_estabilidade),
+  tabPanel('Custo-Benefício', box_custo)
+)
+
+```

@@ -158,10 +158,29 @@ Media_geral <- DT::datatable(
   editable = F,
   options = list(searching = FALSE))
 
+
+fig <- plot_ly(data = dispersion, 
+               x = ~Media_CSAT,
+               y = ~Recomendação,
+               type = 'scattergl',
+               mode = "markers",
+               marker = list(color = 'grey')) %>%
+  layout(
+    xaxis = list(title = "Média CSAT",
+                 tickmode = "array",
+                 tickvals = 1:10,
+                 ticktext = 1:10), 
+    yaxis = list(title = "Recomendação",
+                 tickmode = "array",
+                 tickvals = 1:10,
+                 ticktext = 1:10))
+
+
 # Criar o tabsetPanel com as guias para cada ano
 tabsetPanel(
   tabPanel('Média Geral por Veículo', Media_geral),
-  tabPanel('Gráfico Média Geral', boxplot)
+  tabPanel('Gráfico Média Geral', boxplot),
+  tabPanel('Relação Recomendação X Análise Produto', fig)
 )
 
 

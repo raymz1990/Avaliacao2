@@ -359,6 +359,8 @@ recomendacao_2 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 
 recomendacao_1 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 1]) / sum(dados_heatmap$Valor),3) * 100
 recomendacao_0 <- round(sum(dados_heatmap$Valor[dados_heatmap$Recomendação == 0])/ sum(dados_heatmap$Valor),3) * 100
 
+nota_recomenda <- recomendacao_10 + recomendacao_9 + recomendacao_8
+
 # Criar o dataframe para o heatmap CSAT
 dados_heatmap2 <- dados_CSAT %>%
   select(Marca, Media) 
@@ -368,6 +370,9 @@ dados_heatmap2 <- dados_heatmap2%>%
   group_by(Marca, Nota) %>%
   summarise(valor = n(), .groups = 'drop') 
 colnames(dados_heatmap2) <- c("Marca", "Média CSAT", "Valor")
+
+
+
 
 
 
@@ -385,22 +390,39 @@ colnames(dados_heatmap2) <- c("Marca", "Média CSAT", "Valor")
 #colnames(dados_heatmap2) <- c("Marca", "Média CSAT", "Valor")
 
 
+#dispersion <- dados3 %>%
+#  select(indice, marca, Recomendação, `Valor CSAT`) %>%
+#  group_by(indice) %>%
+#  summarize(Media_Recomendacao = mean(Recomendação),
+#            Media_CSAT = round(mean(`Valor CSAT`),2))
+
+#fig <- plot_ly(data = dispersion, 
+#               x = ~Media_CSAT,
+#               y = ~Media_Recomendacao,
+#               type = 'scattergl',
+#               mode = "markers",
+#               marker = list(color = 'grey')
+#) %>%
+#  layout(
+#    xaxis = list(title = "Média CSAT",
+#                 tickmode = "array",
+#                 tickvals = 1:10,
+#                 ticktext = 1:10), 
+#    yaxis = list(title = "Recomendação",
+#                 tickmode = "array",
+#                 tickvals = 1:10,
+#                 ticktext = 1:10)
+#  )
+
+#fig
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+tb_atributos <- dados %>%
+  select(carro, marca, item, nota) %>%
+  rename(Marca = marca, Carro = carro) %>%
+  group_by(Carro, Marca, item) %>%
+  summarise(nota = round(mean(nota),2), .groups = 'drop') %>%
+  pivot_wider(names_from = item, values_from = nota) %>%
+  mutate(CSAT = round(rowMeans(select(., Estilo, Acabamento, `Posição de dirigir`, Instrumentos, Interior, `Porta-malas`, Desempenho, Motor, Câmbio, Freios, Suspensão, Consumo, Estabilidade, `Custo-Benefício `)), 2))
 
 

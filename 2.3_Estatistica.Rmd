@@ -47,9 +47,9 @@ source("./R/dados.R")
 
 ### 
 
-De forma geral, a empresa é bem avaliada pelos clientes. Conforme a coleta de dados realizada, em uma escala de **0** a **10**, a companhia teve uma média de **`r media`** na Recomendação, sendo que **`r recomendacao_10`%** das notas avaliada foram 10. Desta forma, é possível observar no "mapa do calor abaixo", uma maior concentração no topo do gráfico (especialmente, com notas **10**, que corresponde **`r recomendacao_10`%** do total, 9 e 8) e uma
+De forma geral, os clientes avaliam positivamente a empresa, refletindo uma boa reputação e satisfação geral. Com base nos dados coletados, observamos que a média de recomendação da empresa é de **`r media`** em uma escala de **0** a **10**. Além disso, ressalta-se que aproximadamente **`r nota_recomenda`%** das avaliações estão acima de **8**.
 
-
+Quanto à avaliação dos produtos, utilizamos o **CSAT** (<i>Customer Satisfaction Score</i>) para analisar as médias das variáveis relacionadas. Nesse contexto, notamos que os valores extremos ocorrem com menos frequência, havendo uma distribuição mais concentrada em torno das médias. É importante mencionar que algumas representações gráficas podem suprimir ou ocultar valores atípicos ou extremos, porém, ao analisar os dados de forma mais detalhada, podemos identificar padrões e tendências relevantes.
 
 
 #### {.tabset .tabset-fade .tabset-pills}
@@ -91,10 +91,92 @@ tabsetPanel(
 
 ```
 
+
 ---
 
-### CSAT
+### Desempenho por Atributo do Produto
 
+Neste tópico, apresentamos todos os atributos estudados com o objetivo de identificar padrões e comportamentos dos clientes. Ao analisar os dados, observamos uma tendência dos clientes em avaliar positivamente o **Estilo** do carro, indicando que esse é um fator importante na decisão de compra. No entanto, outros atributos tendem a ser avaliados posteriormente à compra, podendo sofrer influência conforme as necessidades individuais de cada cliente.
+
+Assim sendo, é importante considerar o intervalo de tempo entre a compra do veículo e a realização da pesquisa de satisfação. Nesse sentido, é possível que a avaliação seja influenciada pelo desgaste natural do carro ao longo do tempo e pelas rotinas diárias de uso. É comum que a percepção do cliente em relação a alguns atributos possa mudar ao longo do período de utilização do veículo.
+
+Essas informações nos ajudam a compreender melhor como os clientes percebem os atributos dos veículos e como suas avaliações podem ser influenciadas por diferentes fatores. 
+
+
+
+#### {.tabset .tabset-fade .tabset-pills}
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
+
+ordem <- c("Estilo", "Acabamento", "Posição de dirigir", "Instrumentos", "Interior", "Porta-malas", "Desempenho", "Motor", "Câmbio", "Freios", "Suspensão", "Consumo", "Estabilidade", "Custo-Benefício ", "Recomendação")
+
+dados$item <- factor(dados$item, levels = ordem)
+
+
+boxplot <- plot_ly(
+  data = dados, 
+  x = ~item, 
+  y = ~nota, 
+  type = "box",
+  color = I("grey")
+) %>% 
+  layout(
+    title = list(
+      text = "Desempenho Geral dos Atributos Avaliados",
+      y = 0.97),
+    xaxis = list(title = "Atributo"),
+    yaxis = list(title = "Nota",
+                 tickmode = "array",
+                 tickvals = 1:10,
+                 ticktext = 1:10),
+    showlegend = F)
+
+
+# 
+Media_geral <- DT::datatable(
+  tb_atributos[,c('Carro', 
+                  'Marca',
+                  "Estilo", 
+                  "Acabamento",
+                  "Posição de dirigir",
+                  "Instrumentos",
+                  "Interior",
+                  "Porta-malas",
+                  "Desempenho",
+                  "Motor",
+                  "Câmbio",
+                  "Freios",
+                  "Suspensão",
+                  "Consumo",
+                  "Estabilidade",
+                  "Custo-Benefício ",
+                  "CSAT",
+                  "Recomendação")],  
+  class = 'cell-border stripe',
+  rownames = F,
+  filter = 'top',
+  editable = F,
+  options = list(searching = FALSE))
+
+# Criar o tabsetPanel com as guias para cada ano
+tabsetPanel(
+  tabPanel('Média Geral por Veículo', Media_geral),
+  tabPanel('Gráfico Média Geral', boxplot)
+)
+
+
+
+```
+
+---
+
+### Desempenho de Cada Atríbuto na Avaliação do Veículo
+
+Nesta parte da análise, apresentamos gráficos que mostram o desempenho individual de cada atributo de acordo com o tipo de carro. Esses gráficos nos permitem identificar onde se concentram as notas avaliadas pelos clientes, bem como identificar valores extremos que podem surgir com certa frequência em uma amostra significativa, considerando a escala de 0 a 10 utilizada na avaliação.
+
+Novamente, visualiza-se o atributo **Estilo** com uma boa avaliação por parte dos clientes, uma vez que é um requisito importante na escolha e aquisição de um veículo. Por outro lado, outros atributos podem ser influenciados pelo dia a dia do cliente e suas necessidades individuais. É importante destacar que a percepção desses atributos pode variar de acordo com a rotina e experiência de cada cliente.
+
+Com base nessas informações, podemos promover ações para que os vendedores identifiquem o perfil do cliente e ofereçam o produto que melhor atenda às suas necessidades e preferências. Essa abordagem personalizada pode contribuir para aumentar a satisfação dos clientes e direcionar as vendas de forma mais eficiente.
 
 
 #### {.tabset .tabset-fade .tabset-pills}
@@ -585,3 +667,5 @@ tabsetPanel(
 )
 
 ```
+
+---

@@ -127,8 +127,8 @@ boxplot <- plot_ly(
     xaxis = list(title = "Atributo"),
     yaxis = list(title = "Nota",
                  tickmode = "array",
-                 tickvals = 1:10,
-                 ticktext = 1:10),
+                 tickvals = 0:10,
+                 ticktext = 0:10),
     showlegend = F)
 
 
@@ -168,12 +168,12 @@ fig <- plot_ly(data = dispersion,
   layout(
     xaxis = list(title = "Média CSAT",
                  tickmode = "array",
-                 tickvals = 1:10,
-                 ticktext = 1:10), 
+                 tickvals = 0:10,
+                 ticktext = 0:10), 
     yaxis = list(title = "Recomendação",
                  tickmode = "array",
-                 tickvals = 1:10,
-                 ticktext = 1:10))
+                 tickvals = 0:10,
+                 ticktext = 0:10))
 
 
 # Criar o tabsetPanel com as guias para cada ano
